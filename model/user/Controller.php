@@ -63,6 +63,15 @@ class Controller extends User
     }
 
 
+    /**
+     * 사용자 정보 추출
+     *
+     * @param $in
+     * @return array
+     *
+     * @usage php index.php "route=user.Controller.collect&limit=5"
+     *
+     */
     public function collect($in) {
         $o = [];
         $o['fields'] = isset($in['fields']) ? $in['fields'] : '*';

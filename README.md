@@ -116,3 +116,27 @@ core 폴더에는 필수적인 코드와 범용적으로 쓰이는 코드들이 
     php index.php "route=user.Controller.uninstall" ( 삭제 )
 
 
+
+
+
+## 테스트 스크립트 작성 방법
+
+참고: 테스트 스크립트는 각 model 폴더의 Test.php 로 작성한다. 따라서 각 model 의 Test.php 파일을 참고한다.
+
+
+각 model 폴더 아래에 Test.php 클래스를 작성해 놓고 아래와 같이 route=model.class.method 로 호출하면 된다.
+
+    php index.php "route=user.Test.call&a=b&c=d&number=0917"
+    php index.php route=user.Test.createTempUsers
+    
+    
+
+입력 값은 첫번째 변수에 모두 전달된다.
+
+메쏘드 예제
+    
+    public function call( $in ) {
+        print_r($in);
+    }
+
+

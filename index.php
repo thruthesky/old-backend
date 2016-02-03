@@ -33,6 +33,7 @@ if ( isset($_SERVER['argv'][1]) ) {
 }
 
 if ( hi('route') ) {
+    header('Access-Control-Allow-Origin: *');
     route()->run( hi('route'), hi() );
 }
 

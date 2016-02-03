@@ -7,13 +7,23 @@ class DatabaseTest extends Database {
     public function run() {
         $this->test_database_connection();
         $this->crudTable();
-        //$this->editTable();
-        //$this->crudRecord();
-        //$this->test_table_list();
+        $this->editTable();
+        $this->crudRecord();
+        $this->test_table_list();
     }
 
     private function crudTable()
     {
+
+        //
+        $name = "test_table_1";
+        test( database()->tableExists($name) == false, '', "$name Table exists.");
+        $this->test_createTable($name);
+        test( database()->tableExists($name), '', "$name Table does not exist.");
+        database()->dropTable($name);
+        test( ! database()->tableExists($name) );
+
+        //
         $name = 'test_table_crud';
         $db = $this->test_createTable($name);
         $re = $db->tableExists($name);
@@ -35,7 +45,16 @@ class DatabaseTest extends Database {
         $db->addIndex($name, 'created');
         $db->addColumn($name, 'updated', 'int unsigned');
         $db->addUniqueKey($name, 'updated');
+
+        //
         $db->addColumn($name, 'name', 'varchar', 255);
+        test( $db->columnExists($name, 'name') );
+
+        //
+        test( ! $db->columnExists($name, 'address') );
+        $db->addColumn($name, 'address', 'varchar', 255);
+        test( $db->columnExists($name, 'address') );
+
 
         $db->dropTable($name);
     }
@@ -44,6 +63,7 @@ class DatabaseTest extends Database {
     {
         $name = 'test_record_crud';
         $db = $this->test_createTable($name);
+
 
         $db->insert($name, array('id' => 100));
         $id = $db->insert_id();
@@ -71,6 +91,29 @@ class DatabaseTest extends Database {
 
         $db->delete($name, 'id=200');
         test($db->count($name) == 2, "OK", 'ERROR - the no of record is not 3');
+
+
+        $db->dropTable($name);
+
+
+        // new test set
+        $db = $this->test_createTable($name);
+
+        //
+        test ( $db->columnExists($name, 'num') == false, 'Ok. num field does not exists.', 'num field exists.' );
+        $db->addColumn($name, 'num', 'int');
+        $db->addUniqueKey($name, 'num');
+        test ( $db->columnExists($name, 'num'), 'Ok. num field exists.', "num field does not exists in $name table." );
+
+        //
+        $db->insert($name, array('num'=>500));
+        test($db->count($name) == 1, "OK", 'ERROR - the no of record is not 1');
+
+        //$db->insert($name, array('num'=>500));
+        //test($db->count($name) == 1, "OK", 'ERROR - the no of record is not 1');
+
+
+
 
         $db->dropTable($name);
     }
@@ -119,6 +162,7 @@ class DatabaseTest extends Database {
 
     private function test_table_list()
     {
+        if ( database()->tableExists('abcdef') ) database()->dropTable('abcdef');
         database()->createTable('abcdef');
         $tables = database()->getTables();
         test( in_array('abcdef', $tables) );

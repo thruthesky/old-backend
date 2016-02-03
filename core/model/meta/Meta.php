@@ -9,7 +9,7 @@ use core\model\entity\Entity;
  *
  *
  *
- * @usage 특정 그룹의 내용을 추출 할 때에는 아래와 같이 해야하낟.
+ * @usage 특정 그룹의 내용을 추출 할 때에는 아래와 같이 해야한다.
  * @code
 $meta = meta('philgo');
 $users = $meta->rows("code LIKE 'google_store.%'");

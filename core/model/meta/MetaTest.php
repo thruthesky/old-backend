@@ -22,7 +22,6 @@ class MetaTest extends Meta {
         if ( $meta->exists() ) $meta->uninit();
         $meta->init();
 
-
         $meta->set('a', 'b');
         test( $meta->get('a') == 'b', 'OK', 'ERROR');
         $meta->set('a', 'c');

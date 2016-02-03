@@ -2,6 +2,8 @@
 namespace core\model\database;
 
 
+use Exception;
+
 class DatabaseLayer extends \SQLite3
 {
 
@@ -9,7 +11,7 @@ class DatabaseLayer extends \SQLite3
 
     public function __construct()
     {
-        $this->open('backend.sqlite');
+        $this->open(PATH_SQLITE);
     }
 
     public function getDatabaseObject() {
@@ -32,15 +34,21 @@ class DatabaseLayer extends \SQLite3
      * @param $q
      * @return boolean
      *
-     *      - Returns FALSE on failure.
-     *
      *      - Return TRUE on success.
+     * @Attention it dies on Failure.
      *
      */
     public function exec($q) {
         sys()->log($q);
-        $ret = parent::exec($q);
-        return $ret;
+
+        $re = parent::exec($q);
+        if ( $re === FALSE ) {
+            $code = $this->lastErrorCode();
+            $message = $this->lastErrorMsg();
+            die( "SQLite3::exec() failed. ERROR ($code) : $message");
+        }
+        else return $re;
+
     }
 
 
@@ -97,22 +105,13 @@ class DatabaseLayer extends \SQLite3
     }
 
     public function getTables() {
-        if ( sys()->isCodeIgniter3() ) {
-            return $this->db->list_tables();
+        $rets = array();
+        $rows = $this->query("SELECT name FROM sqlite_master WHERE type='table'");
+        if ( empty($rows) ) return $rets;
+        foreach( $rows as $row ) {
+            $rets[] = $row['name'];
         }
-        else if ( sys()->isSapcms1() ) {
-            $tables = array();
-            $rows = $this->db->rows("SHOW TABLES");
-            if ( $rows ) {
-                foreach( $rows as $row ) {
-                    list ($k, $v) = each($row);
-                    $tables[] = $v;
-                }
-            }
-            return $tables;
-        }
-        $path = path_run(2);
-        die("DatabaseLayer::query()<hr>No framework support. No database connection.<hr>$path");
+        return $rets;
     }
 
 }

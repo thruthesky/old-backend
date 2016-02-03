@@ -7,14 +7,73 @@ class System {
 
     static $count_log = 0;
 
-    static $list_core_model = array();
-    static $list_user_model = array();
+    public static $list_core_model = array();
+    public static $list_user_model = array();
+
+
+    public static $list_core_model_name = array();
+    public static $list_user_model_name = array();
+
 
     public function __construct()
     {
+        global $global_sys;
+        if ( $global_sys ) die("system is already instantiated.");
+            /*
+        else {
+            echo "instantiating...\n";
+            debug_print_backtrace();
+        }
+            */
+
         self::$list_core_model = glob(DIR_ROOT. "/core/model/*", GLOB_ONLYDIR);
         self::$list_user_model = glob(DIR_ROOT. "/model/*", GLOB_ONLYDIR);
+
+
+        foreach ( $this->getPathCoreModel() as $path ) {
+            $pi = pathinfo($path);
+            self::$list_core_model_name[] = $pi['basename'];
+        }
+        foreach ( $this->getPathUserModel() as $path ) {
+            $pi = pathinfo($path);
+            self::$list_user_model_name[] = $pi['basename'];
+        }
+
+
     }
+
+    public function getPathCoreModel() {
+        return self::$list_core_model;
+    }
+    public function getPathUserModel() {
+        return self::$list_user_model;
+    }
+
+    public function getCoreModel() {
+        return self::$list_core_model_name;
+    }
+
+
+    /**
+     * @return array
+     *
+     * @code
+     * print_r( $this->getUserModel() );
+     * @endcode
+     */
+    public function getUserModel() {
+        return self::$list_user_model_name;
+    }
+
+    public function isCoreModel($model) {
+        return in_array($model, self::$list_core_model_name);
+    }
+
+    public function isUserModel($model)
+    {
+        return in_array($model, self::$list_user_model_name);
+    }
+
 
 
     /**
@@ -48,6 +107,7 @@ class System {
             }
         }
     }
+
 
 
 }

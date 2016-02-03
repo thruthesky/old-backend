@@ -1,20 +1,18 @@
 <?php
+
 require 'config.php';   // 각종 경로 및 초기 값 설정
+require 'core/script/function.php';   // 각종 경로 및 초기 값 설정
+require 'core/script/init.php';   // 초기화 코드
 require 'autoload.php';
-
-
-use core\model\system\System;
-$sys = new System();
-
 
 /**
  * 모듈 init.php 파일을 여기서 로드해야, 전역으로 적용가능하다. 예) 전역 변수 설정 등.
  */
-foreach ( System::$list_core_model as $path ) {
+foreach ( sys()->getPathCoreModel() as $path ) {
     $init = "$path/init.php";
     if ( file_exists($init) ) include $init;
 }
-foreach ( System::$list_user_model as $path ) {
+foreach ( sys()->getPathUserModel() as $path ) {
     $init = "$path/init.php";
     if ( file_exists($init) ) include $init;
 }
@@ -23,6 +21,19 @@ foreach ( System::$list_user_model as $path ) {
 /**
  * TEST 코드 실행
  */
-if ( $_SERVER['argv'][1] == 'test' ) {
+if ( isset($_SERVER['argv'][1]) && $_SERVER['argv'][1] == 'test' ) {
     sys()->runTest();
 }
+
+if ( isset($_SERVER['argv'][1]) ) {
+    parse_str( $_SERVER['argv'][1], $in );
+    if ( isset($in['route']) ) {
+        route()->run($in['route'], $in);
+    }
+}
+
+if ( hi('route') ) {
+    route()->run( hi('route'), hi() );
+}
+
+

@@ -3,7 +3,7 @@ namespace core\model\entity;
 
 
 
-class CrudTest extends Crud
+class ControllerTest extends Controller
 {
     public function run()
     {

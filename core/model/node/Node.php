@@ -1,5 +1,7 @@
 <?php
-namespace of;
+namespace core\model\node;
+use core\model\entity\Entity;
+
 /**
  * Class Node
  *

@@ -3,13 +3,39 @@
 namespace core\model\entity;
 
 
-class Crud extends Entity {
+class Controller extends Entity {
 
     public function __construct()
     {
         parent::__construct();
     }
 
+
+    /**
+     *
+     *
+     * 데이터베이스 테이블이 존재하는지 하지 않는지 확인르 한다.
+     *
+     * @Attention 이 메소드는 언뜻 보기에는 해당 Entity 클래스가 존재하는지 확인하는 것 같지만, 사실은 데이터베이스 존재 여부만 확인을 한다.
+     *
+     *
+     * @param $in
+     * @return array
+     *
+     *
+     * @usage php index.php "route=entity.Controller.exist&node=user"
+     *
+     */
+    public function exist($in)
+    {
+        $tablename = null;
+        if ( isset($in['node']) ) $tablename = $in['node'] . "_node_entity";
+        else if ( isset($in['meta']) ) $tablename = $in['meta'] . "_meta_entity";
+        else ERROR( -401, 'Wrong input' );
+        $re = parent::exists($tablename);
+        if ( $re ) return SUCCESS();
+        else return ERROR(-402, "$tablename does not exists.");
+    }
 
     /**
      *
@@ -30,9 +56,7 @@ class Crud extends Entity {
      * http://philgo.org/?module=overframe&action=index&model=entity.crud.collect&entity=data&order_by=id%20ASC&fields=id,finish,name&where=id%3E3&limit=3
      * @endcode
      */
-    public function collect() {
-
-        $in = http_input();
+    public function collect($in) {
 
         $o['fields'] = isset($in['fields']) ? $in['fields'] : '*';
         $o['where'] = isset($in['where']) ? $in['where'] : null;
@@ -51,7 +75,7 @@ class Crud extends Entity {
             $data[] = $e->getRecord();
         }
 
-        json_success($data);
+        return $data;
     }
 
 }

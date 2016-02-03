@@ -80,6 +80,13 @@ class Controller extends User
             $data[] = $e->getRecord();
         }
 
+        //
+        $count = count( $data ) ;
+        if ( $count == 0 ) {
+            if ( ! $this->exists() ) return ERROR( -131, "User model is not installed");
+        }
+
+
         return SUCCESS($data);
     }
 

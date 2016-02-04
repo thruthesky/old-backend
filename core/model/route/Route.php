@@ -18,14 +18,14 @@ class Route
             //response( array( 'code' => -2, 'message'=>'model does not exists.') );
             $path = "core\\model\\$model\\$class";
             $obj = new $path();
-            if ( ! method_exists( $obj, $method ) ) response( array( 'code' => -200, 'message' => "method does not exists. in $path") );
+            if ( ! method_exists( $obj, $method ) ) response( array( 'code' => -200, 'message' => "method $method - does not exists. in $path") );
             $data = $obj->$method( $in );
             if ( $data ) response( $data );
         }
         else if ( sys()->isUserModel($model) ) {
             $path = "model\\$model\\$class";
             $obj = new $path();
-            if ( ! method_exists( $obj, $method ) ) response( array( 'code' => -201, 'message' => "method does not exists. in $path") );
+            if ( ! method_exists( $obj, $method ) ) response( array( 'code' => -201, 'message' => "method $method - does not exists. in $path") );
             $data = $obj->$method( $in );
             if ( $data ) response( $data );
         }

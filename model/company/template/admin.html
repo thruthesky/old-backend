@@ -1,0 +1,59 @@
+<h1>Admin page for Company Category</h1>
+<h2>Create Company Information</h2>
+<form class="company-edit">
+    <input type='hidden' name='route' value='company.Controller.edit'>
+    <input type='text' name='company_name' value='' placeholder='Company Name'>
+    <input type='text' name='mobile' value='' placeholder='Mobile Number'>
+    <input type='text' name='landline' value='' placeholder='Landline Number'>
+    <input type='text' name='ceo_name' value='' placeholder='CEO Name'>
+    <input type='text' name='address' value='' placeholder='Company Address'>
+    <input type='email' name='email' value='' placeholder='Company Email'>
+    <input type='text' name='kakao' value='' placeholder='KakaoTalk ID'>
+    <input type='submit'>
+</form>
+<h2>Create/Edit/Delete Categories</h2>
+<form class="category-edit">
+    <input type='hidden' name='route' value='company.Controller.editCategory'>
+    <input type="text" name="category_name" placeholder="Category name">
+    <input type="text" name="category_comment" value="" placeholder="Comment">
+    <input type="submit">
+</form>
+<div class="company-category-list"></div>
+
+
+<script>
+
+    function on_company_edit(e){
+        e.preventDefault();
+        var $form = $(this);
+        var params = $form.serialize();
+        var url = url_backend + '?' + params;
+        $.post(url, function(res){
+            var re = JSON.parse(res);
+            if ( re['code'] ) return alert(re['message']);
+            console.log("success on editing company information.")
+        })
+                .fail(function(xhr) { alert("ERROR on company-edit") });
+    }
+    off_submit('.company-edit', on_company_edit);
+    on_submit('.company-edit', on_company_edit);
+
+    function on_category_edit(e){
+        e.preventDefault();
+        var $form = $(this);
+        var params = $form.serialize();
+        var url = url_backend + '?' + params;
+        $.post(url, function(res){
+            var re = JSON.parse(res);
+            if ( re['code'] ) return alert(re['message']);
+            $form[0].reset();
+            after_company_Controller_admin();
+
+        })
+                .fail(function(xhr) { alert("ERROR on company-edit") });
+    }
+
+    off_submit('.category-edit', on_category_edit);
+    on_submit('.category-edit', on_category_edit);
+
+</script>

@@ -124,3 +124,8 @@ function http_input($name = null, $default = null) {
 function hi($name = null, $default = null) {
     return http_input($name, $default);
 }
+
+
+function template($model, $name) {
+    return DIR_ROOT . "/model/$model/template/$name.html";
+}

@@ -108,6 +108,20 @@ class System {
         }
     }
 
+    /**
+     * @param $name
+     * @return null|string
+     */
+    public function dirModel($name) {
+        if ( $this->isUserModel($name) ) {
+            return DIR_ROOT . "/model/$name";
+        }
+        else if ( $this->isCoreModel($name) ) {
+            return DIR_ROOT . "/core/model/$name";
+        }
+        return null;
+    }
+
 
 
 }

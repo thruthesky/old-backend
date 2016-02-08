@@ -48,7 +48,8 @@ route 에는 모델.클래스.메소드를 기록하면 된다.
 아래와 같이 실행을 하면된다.
 
     php index.php test
-    php index.php route=entity.EntityTest.run
+    php index.php route=entity.EntityTest.run ( EntityTest.php 의 run() 메쏘드를 호출한다. )
+    php index.php route=user.UserTest.path ( UserTest.php 의 path() 메쏘드를 호출한다. run() 을 직접 호출 하지 않아도 된다. )
     php index.php "route=entity.Controller.exist&node=user"
 
 첫번째 라인은 모든 ***Test.php 를 찾아서 실행한다.
@@ -143,4 +144,31 @@ core 폴더에는 필수적인 코드와 범용적으로 쓰이는 코드들이 
 
 
 
-//
+# Company 모듈
+
+## 설치
+
+    $ php index.php "route=company.Controller.install"
+
+위와 같이 설치를 하면 된다.
+
+
+# template 사용하기
+
+model/model-name/template 에는 HTML 파일을 저장한다.
+
+( core 에는 template 폴더가 없다. )
+
+
+backend 에는 특별히 view 가 없는데,
+
+frontend 에서 사용 할 수 있는 view 와 관련된 HTML 를 보관하는 template 폴더가 있다.
+
+이 것은 model 마다 있을 수도 있고 없을 수도 있는데, frontend 의 web/app 과 연관이 있는 것이다.
+
+즉, frontend 에 view 를 정적으로 집어넣지 않고 backend 에서 실시가능로 항상 로드하므로서 frontend 의 디자인 및 기능을 실시간으로 변경 할 수 있는 것이다.
+
+이 폴더에서는 frontend 에서 보여주고 사용 할 html 이나, css, javascript 등을 넣을 수 있다.
+
+특히 ajax 나 ajax 를 통한 캐시, _.template() 등의 기능을 집어 넣으므로서 적절하게 활용을 할 수 있다.
+

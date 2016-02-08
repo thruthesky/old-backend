@@ -13,36 +13,35 @@ class Controller extends Company
 
 
     public function admin() {
-        $html = <<<EOH
-<h1>Admin page</h1>
-<h2>Create Company Information</h2>
-<form class="company-edit">
-<input type='hidden' name='route' value='company.Controller.edit'>
-<input type='text' name='company_name' value='' placeholder='Company Name'>
-<input type='text' name='mobile' value='' placeholder='Mobile Number'>
-<input type='text' name='landline' value='' placeholder='Landline Number'>
-<input type='text' name='ceo_name' value='' placeholder='CEO Name'>
-<input type='text' name='address' value='' placeholder='Company Address'>
-<input type='email' name='email' value='' placeholder='Company Email'>
-<input type='text' name='kakao' value='' placeholder='KakaoTalk ID'>
-<input type='submit'>
 
-</form>
-EOH;
-
-
+        ob_start();
+        include template('company','admin');
+        $html = ob_get_clean();
         return SUCCESS( array('html'=>$html) );
     }
 
     public function edit() {
 
+        $company_name = hi('company_name');
+        $email = hi('email');
+
+        if ( empty($company_name) ) return ERROR( -437, "Input company name" );
+        if ( empty($email) ) return ERROR( -439, "Input email");
+
+        $e = $this->load("company_name='$company_name'");
+        if ( $e ) return ERROR( -438, "Company name exists.");
+
+        $e = $this->load("email='$email'");
+        if ( $e ) return ERROR( -440, "Company email exists.");
+
+
         $entity = $this
             ->create()
-            ->set('company_name', hi('company_name'))
+            ->set('company_name', $company_name)
             ->set('ceo_name', hi('ceo_name'))
             ->set('mobile', hi('mobile'))
             ->set('landline', hi('landline'))
-            ->set('email', hi('email'))
+            ->set('email', $email)
             ->set('address', hi('address'))
             ->set('kakao', hi('kakao'))
             ->save();
@@ -50,6 +49,29 @@ EOH;
         if ( $entity ) return SUCCESS();
         else return ERROR(-431, "Failed on creating/updating company information");
     }
+
+    public function editCategory() {
+        $name = hi('category_name');
+        if ( empty($name) ) return ERROR( -451, 'Input category name');
+        category()->set( $name, hi('category_comment') );
+        return SUCCESS();
+    }
+
+    public function categoryDelete() {
+        $id = hi('id');
+        if ( empty($id) ) return ERROR( -457, 'Input category id');
+        $c = category()->load( $id );
+        if ( empty($c) ) return ERROR( -458, "Category by that id - $id does not exists.");
+        category()->load($id)->delete();
+        return SUCCESS();
+    }
+
+
+    public function categoryList($in) {
+        $data = category()->loadAllArray();
+        return SUCCESS($data);
+    }
+
 
 
     public function installed() {
@@ -78,6 +100,8 @@ EOH;
         $this->addUniqueKey('company_name');
         $this->addUniqueKey('email');
 
+        meta('company_category')->init();
+
         return SUCCESS();
     }
 
@@ -85,6 +109,7 @@ EOH;
 
     public function uninstall() {
         $this->uninit();
+        meta('company_category')->uninit();
         return SUCCESS();
     }
 

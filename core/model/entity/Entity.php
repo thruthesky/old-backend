@@ -229,6 +229,7 @@ class Entity {
      *
      * put() 을 통해서 하면 하나의 레코드만 저장하면 되다.
      *
+     * @Attention 이 메소드는 changed 를 업데이트하지 않는다.
      * @param $field
      * @param $value
      * @return bool
@@ -246,6 +247,24 @@ class Entity {
         else return FALSE;
     }
 
+    /**
+     * 여러개의 필드에 값을 변경한다.
+     * @note 원하는 특정 필드(들)의 값만 업데이트를 할 수 있다.
+     * @usage 테이블에 레코드가 많은 경우, 특정 레코드만 업데이트 하려고 할 때 사용한다.
+     * @Attention 주의 : 이 메소드는 changed 필드를 업데이트하지 않는다.
+     * @param $fields_values
+     * @return $this|bool
+     */
+    public function puts($fields_values) {
+        if ( ! $id = self::get('id') ) return FALSE;
+        $this->db->update(
+            $this->getTableName(),
+            $fields_values,
+            "id=$id"
+        );
+        $this->record = array_merge( $this->record, $fields_values );
+        return $this;
+    }
 
     /**
      * @param null $cond - same as database->count()
@@ -336,6 +355,18 @@ class Entity {
      */
     public function loadAll($fields='*') {
         return $this->loadQuery(null, $fields);
+    }
+
+
+    public function loadAllArray($fields='*')
+    {
+        $entities = $this->loadAll($fields);
+        if ( empty($entities) ) return $entities;
+        $rows = array();
+        foreach( $entities as $e ) {
+            $rows[] = $e->getRecord();
+        }
+        return $rows;
     }
 
 

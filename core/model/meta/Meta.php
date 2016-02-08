@@ -20,6 +20,10 @@ $users = $meta->rows("code LIKE 'google_store.%'");
         $meta->load($in['code']);
         if ( $meta && $meta->is() ) $meta->delete();
  * @endcode
+ *
+ *
+ *
+ *
  */
 class Meta extends Entity {
 
@@ -47,15 +51,21 @@ class Meta extends Entity {
      * @return $this|bool - returns FALSE If there is no record matching.
      * - returns FALSE If there is no record matching.
      * @warning If the key is numeric, then you must use loadBy('code', 123);
+     *
+     * @code 메타키 삭제 방법
+     *      meta('table-name')->load('key')->delete();
+     *      meta('table-name')->load(1)->delete();
+     * @endcode
+     * @Attention $id 가 숫자이면, 필드의 id 값을 바탕으로 로드한다.
      */
     public function load($id, $fields='*') {
-        return parent::load("code='$id'");
+        if ( is_numeric($id) ) return parent::load($id);
+        else return parent::load("code='$id'");
     }
 
     /**
-     * 입력된 코드의 값을 변경한다.
+     * 입력된 코드의 값을 생성 또는 변경한다.
      *
-     * 내부적으로 entity::put() 을 사용한다.
      *
      * @param $code
      * @param $value
@@ -63,7 +73,13 @@ class Meta extends Entity {
      */
     public function set($code, $value) {
         $meta = $this->load($code);
-        if ( $meta ) return parent::put('value', $value);
+        if ( $meta ) {
+            //return parent::put('value', $value);
+            parent::set('code', $code);
+            parent::set('value', $value);
+            $re = parent::save();
+            return $re;
+        }
         else {
             $this->create();
             parent::set('code', $code);
@@ -76,6 +92,8 @@ class Meta extends Entity {
     /**
      * 코드를 입력받아서 현재 object 에 로드 한 다음, 값을 리턴한다.
      *
+     * @Attention meta code 의 value 가 null 이거나 empty 이면 레코드가 있음에도 불구하고 false 를 리턴하므로 주의해야 한다.
+     *
      * @param $code
      * @return bool|mixed
      */
@@ -85,5 +103,7 @@ class Meta extends Entity {
         if ( $meta ) return parent::get('value');
         else return FALSE;
     }
+
+
 
 }

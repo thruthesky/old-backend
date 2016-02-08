@@ -12,6 +12,8 @@ class EntityTest extends Entity
         $this->test_select_fields();
         $this->test_search();
         $this->test_query();
+        $this->test_puts();
+
 
     }
 
@@ -288,5 +290,48 @@ class EntityTest extends Entity
         $re = $entity->result('name', "name like '%jung%'");
         test( $row['name'] == $re );
         $entity->uninit();
+    }
+
+    public function test_puts()
+    {
+
+
+        $entity = $this->createDefaultTable();
+        $entity->addColumn('age', 'int');
+
+        $A = $entity->create()->set('name', 'A')->set('address', 'B')->set('age', 1)->save();
+
+
+
+        $item = $entity->load("name='A'");
+
+
+        test( $A->get('id') == $item->get('id') );
+        test( $A->get('address') == 'B' );
+        test( $A->get('age') == 1 );
+
+
+        $A->puts(['address'=>'Address2', 'age'=>2]);
+
+
+        $U = $entity->load("name='A'");
+        test( $A->get('id') == $U->get('id'), '', "id same." );
+
+        sys()->log("address of B: " . $A->get('address'));
+        test( $A->get('address') == 'Address2', '', 'Address is changed since it is the object of main' );
+        test( $item->get('address') == 'B', '', 'Address is not changed');
+
+        test( $item->get('age') == 1, '', 'Age is 1' );
+
+
+        test( $U->get('address') == 'Address2' );
+        test( $U->get('age') == 2 );
+
+        test( $item->get('name') == $U->get('name') );
+
+
+        $entity->uninit();
+
+
     }
 }

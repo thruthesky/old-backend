@@ -361,8 +361,12 @@ class Entity {
     public function loadAllArray($fields='*')
     {
         $entities = $this->loadAll($fields);
-        if ( empty($entities) ) return $entities;
+        return $this->getRecords($entities);
+    }
+
+    public function getRecords($entities) {
         $rows = array();
+        if ( empty($entities) ) return $rows;
         foreach( $entities as $e ) {
             $rows[] = $e->getRecord();
         }
@@ -406,12 +410,26 @@ class Entity {
      *
      *      - $o['order_by'] is the ORDER clause
      *      - $o['fields'] is the fields to retrieve. for instance, 'id, created'
+     *      - $o['return'] is the data type of return.
+     *          만약, $o['return'] = 'array' 이면, 리턴되는 값을 배열로 해서 리턴한다.
      *
      * @note
      *  - limit 과 page 를 같이 쓰는 경우는 page 별로 레코드를 추출하는 경우이다.
      *  - limit 과 offset 을 쓰는 경우는 특정 위치 부터 몇 개의 레코드를 추출하는 경우이다.
      *  - limit 만 쓰는 경우는 맨 처음 부터 몇 개의 레코드를 추출하는 경우이다.
-     * @return array
+     * @note limit 의 값을 충분히 주면, $this->loadQuery() 와 비슷하게 활용가능하다.
+     * @return array of Object|array of Records
+     *
+     * @code
+
+    $cats = category()->search([
+    'where' => 'id>2 AND id<100',
+    'order_by' => 'code ASC',
+    'limit' => 2,
+    'return' => 'array'
+    ]);
+     *
+     * @endcode
      */
     public function search( array $o = array() ) {
 
@@ -432,7 +450,9 @@ class Entity {
             else $limit = "LIMIT $o[limit]";
         }
 
-        return $this->loadQuery("$where $order_by $limit", $fields);
+        $entities = $this->loadQuery("$where $order_by $limit", $fields);
+        if ( isset($o['return']) && $o['return'] == 'array' ) return $this->getRecords($entities);
+        else return $entities;
     }
 
     public function page($page_no, $limit)

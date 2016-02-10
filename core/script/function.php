@@ -127,5 +127,7 @@ function hi($name = null, $default = null) {
 
 
 function template($model, $name) {
-    return DIR_ROOT . "/model/$model/template/$name.html";
+    ob_start();
+    include DIR_ROOT . "/model/$model/template/$name.html";
+    return ob_get_clean();
 }

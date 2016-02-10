@@ -1,7 +1,20 @@
 <h1>Admin page for Company Category</h1>
 <h2>Create Company Information</h2>
+<?php
+$cats = category()->search([
+'order_by' => 'code ASC',
+'limit' => 9999,
+'return' => 'array'
+]);
+
+?>
 <form class="company-edit">
     <input type='hidden' name='route' value='company.Controller.edit'>
+    <select name="category">
+        <?php foreach ( $cats as $cat ) { ?>
+        <option value="<?php echo $cat['id']?>"><?php echo $cat['code']?></option>
+    <?php } ?>
+    </select>
     <input type='text' name='company_name' value='' placeholder='Company Name'>
     <input type='text' name='mobile' value='' placeholder='Mobile Number'>
     <input type='text' name='landline' value='' placeholder='Landline Number'>
@@ -13,9 +26,9 @@
 </form>
 <h2>Create/Edit/Delete Categories</h2>
 <form class="category-edit">
-    <input type='hidden' name='route' value='company.Controller.editCategory'>
-    <input type="text" name="category_name" placeholder="Category name">
-    <input type="text" name="category_comment" value="" placeholder="Comment">
+    <input type='hidden' name='route' value='company.Controller.createCategory'>
+    <input type="text" name="code" placeholder="Category name">
+    <input type="text" name="value" value="" placeholder="Comment">
     <input type="submit">
 </form>
 <div class="company-category-list"></div>
@@ -28,7 +41,7 @@
         var $form = $(this);
         var params = $form.serialize();
         var url = url_backend + '?' + params;
-        $.post(url, function(res){
+        $.get(url, function(res){
             var re = JSON.parse(res);
             if ( re['code'] ) return alert(re['message']);
             console.log("success on editing company information.")
@@ -37,23 +50,4 @@
     }
     off_submit('.company-edit', on_company_edit);
     on_submit('.company-edit', on_company_edit);
-
-    function on_category_edit(e){
-        e.preventDefault();
-        var $form = $(this);
-        var params = $form.serialize();
-        var url = url_backend + '?' + params;
-        $.post(url, function(res){
-            var re = JSON.parse(res);
-            if ( re['code'] ) return alert(re['message']);
-            $form[0].reset();
-            after_company_Controller_admin();
-
-        })
-                .fail(function(xhr) { alert("ERROR on company-edit") });
-    }
-
-    off_submit('.category-edit', on_category_edit);
-    on_submit('.category-edit', on_category_edit);
-
 </script>

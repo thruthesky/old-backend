@@ -1,0 +1,33 @@
+<?php
+$cats = category()->loadAllArray();
+?>
+<style>
+    .row .code {
+        background-color:#f0f0f0;
+    }
+</style>
+<h1>Company category list</h1>
+<div class="list">
+    <?php foreach ( $cats as $cat ) {
+
+    ?>
+    <div class="row" rid="<?php echo $cat['id']?>">
+
+        <div class="content">
+        <span class="code"><?php echo $cat['code']?></span>
+        <span class="value"><?php echo $cat['value']?></span>
+        <span class="button category-edit-button">Edit</span>
+        <span class="button category-delete-button"
+              route="company.Controller.categoryDelete&id=<?php echo $cat['id'] ?>"
+              callback="reloadCategoryList"
+                >Delete</span>
+        </div>
+
+    </div>
+    <?php } ?>
+</div>
+<script>
+    function reloadCategoryList() {
+        ajax_load_route('company.Controller.categoryList', '.company-category-list');
+    }
+</script>

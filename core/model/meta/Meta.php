@@ -21,7 +21,14 @@ $users = $meta->rows("code LIKE 'google_store.%'");
         if ( $meta && $meta->is() ) $meta->delete();
  * @endcode
  *
+ * @code Meta 의 경우, 전체 레코드를 읽거나 부분적으로 읽는다면, Array 로 값을 가져오는 것이 간편하다.
+        $cats = category()->loadAllArray();
+ * @endcode
  *
+ * @code id 는 유지한 채 키와 코드를 바꾸는 방법.
+        $meta = meta('table-name')->load($id);
+        $meta->sets(['code'=>hi('code'), 'value'=>hi('value')])->save();
+ * @endcode
  *
  *
  */

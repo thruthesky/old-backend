@@ -8,9 +8,22 @@
     
 - 간단한 설치를 위해서 sqlite3 를 적용했다.
 
+# Route
+
+route 는 model.class.method 로 구성된 소스 코드 실행 경로로서 특정 모델의 클래스에 있는 메소드를 직접 실행 할 수 있게 해 준다.
+
+예를 들어, "http://work.org/?route=abc.def.ghi" 와 같이 접속을 하면,
+
+abc 모델 폴더의 def.php 파일에 있는 ghi 메소드를 실행하는 것이다.
+
+그리고 ghi 메소드에서는 적절한 결과를 JSON 또는 HTML 등으로 리턴하면 된다.
+
+특히, Ajax 콜을 할 때, 직접적으로 route 를 호출하면 된다.
+
 ## 사용법
 
     php index.php
+
 
 ### CLI 에서 모델/클래스/메소드를 실행하는 방법
 

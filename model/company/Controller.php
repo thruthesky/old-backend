@@ -11,13 +11,20 @@ class Controller extends Company
         parent::__construct();
     }
 
+    public function version() {
+        echo '20160213';
+    }
+
+    public function header() {
+        echo template('company', 'header');
+    }
+
+    public function frontPage() {
+        echo template('company', 'frontPage');
+    }
 
     public function admin() {
-
-        ob_start();
-        include template('company','admin');
-        $html = ob_get_clean();
-        return SUCCESS( array('html'=>$html) );
+        return SUCCESS( array('html'=> template('company', 'admin')) );
     }
 
     public function edit() {
@@ -50,10 +57,24 @@ class Controller extends Company
         else return ERROR(-431, "Failed on creating/updating company information");
     }
 
-    public function editCategory() {
-        $name = hi('category_name');
+
+    public function createCategory() {
+        $name = hi('code');
         if ( empty($name) ) return ERROR( -451, 'Input category name');
-        category()->set( $name, hi('category_comment') );
+        category()->set( $name, hi('value') );
+        return SUCCESS();
+    }
+
+    /**
+     *
+     * @return array
+     *
+     */
+    public function editCategory() {
+        $id = hi('id');
+        if ( empty($id) ) return ERROR( -452, 'category id is not provied.');
+        $meta = category()->load($id);
+        $meta->sets(['code'=>hi('code'), 'value'=>hi('value')])->save();
         return SUCCESS();
     }
 
@@ -68,8 +89,9 @@ class Controller extends Company
 
 
     public function categoryList($in) {
-        $data = category()->loadAllArray();
-        return SUCCESS($data);
+        //$data = category()->loadAllArray();
+        //return SUCCESS($data);
+        echo template('company', 'categoryList');
     }
 
 
@@ -114,12 +136,14 @@ class Controller extends Company
     }
 
 
+    /**
     public function countInformation() {
         return SUCCESS( array('count' => $this->count() ) );
     }
+     * */
 
 
-    public function searchInformation($in) {
+    public function getCategory($in) {
         $entities = $this->search();
         $list = [];
         if ( $entities ) {

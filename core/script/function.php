@@ -215,3 +215,13 @@ function is_get() {
 function url_script() {
     return url_domain( ) . $_SERVER["PHP_SELF"];
 }
+
+/**
+ * backend 가 설치된 경로를 리턴한다.
+ * @note 끝에 / 가 붙는다.
+ * @return mixed
+ */
+function url_install_dir() {
+    $url_script = url_script();
+    return str_replace("/index.php", '/', $url_script);
+}

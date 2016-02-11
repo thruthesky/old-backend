@@ -29,7 +29,6 @@
 
     .categories ul .text {
         display:block;
-        position:absolute;
         top:52px;
         left:0;
         right:0;
@@ -48,7 +47,38 @@
     </form>
 
     <div class="categories">
+
         <ul>
+
+
+            <?php
+
+            $cats = category()->loadAllArray();
+            foreach ( $cats as $cat ) {
+
+            $file = data()->load("gid='company-category' AND code='$cat[id]'");
+            $url_install_dir = url_install_dir();
+            if ( $file ) {
+            $id = $file->get('id');
+            $url = $file->get('url');
+            $img = "<img fid='$id' src='$url'>";
+            }
+            else $img = "<img src='{$url_install_dir}model/company/tmp/category-icon/marketing.png'>";
+
+?>
+
+            <li>
+                <div>
+                    <?php echo $img?>
+                    <span class="text"><?php echo $cat['code']?></span>
+                </div>
+            </li>
+
+            <?php
+            }
+
+
+            /*
             <li route="company.Controller.getCategory&category=Church" callback="display_company_list"><div><img src="img/category-icons/church.png"><span class="text">Church</span></div></li>
             <li><div><img src="img/category-icons/gov.png"><span class="text">공공기관</span></div></li>
             <li><div><img src="img/category-icons/train.png"><span class="text">어학원</span></div></li>
@@ -81,6 +111,8 @@
             <li ><div><img src="img/category-icons/pest.png"><span class="text">방역청소</span></div></li>
             <li ><div><img src="img/category-icons/car.png"><span class="text">자동차</span></div></li>
             <li ><div><img src="img/category-icons/water.png"><span class="text">정수기</span></div></li>
+            */
+            ?>
         </ul>
     </div>
 

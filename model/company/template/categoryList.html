@@ -14,15 +14,20 @@ $cats = category()->loadAllArray();
     <div class="row" rid="<?php echo $cat['id']?>">
 
         <div class="content">
-        <span class="code"><?php echo $cat['code']?></span>
-        <span class="value"><?php echo $cat['value']?></span>
-        <span class="button category-edit-button">Edit</span>
+            <span class="icon"></span>
+            <span class="code"><?php echo $cat['code']?></span>
+            <span class="value"><?php echo $cat['value']?></span>
+            <span class="button category-edit-button">Edit</span>
         <span class="button category-delete-button"
               route="company.Controller.categoryDelete&id=<?php echo $cat['id'] ?>"
               callback="reloadCategoryList"
-                >Delete</span>
+        >Delete</span>
+            <form class='philgo-banner-form' action="<?php echo url_script()?>?route=data.Controller.fileUpload" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="gid" value="company-category">
+                <input type="hidden" name="code" value="<?php echo $cat['id']?>">
+                <input type="file" name="userfile" onchange="on_change_file_upload(this);">
+                </form>
         </div>
-
     </div>
     <?php } ?>
 </div>
@@ -30,4 +35,40 @@ $cats = category()->loadAllArray();
     function reloadCategoryList() {
         ajax_load_route('company.Controller.categoryList', '.company-category-list');
     }
+    function on_change_file_upload(filebox) {
+        var $filebox = $(filebox);
+        if ( $filebox.val() == '' ) return;
+        var $form = $filebox.parents("form");
+        var $row = $filebox.parents(".row");
+
+        $form.ajaxSubmit({
+            error : function (xhr) {
+                alert("ERROR on ajaxSubmit() ...");
+            },
+            complete: function (xhr) {
+                console.log("File upload completed through jquery.form.js");
+                var re;
+                try {
+                    re = JSON.parse(xhr.responseText);
+                }
+                catch (e) {
+                    alert("ERROR: JSON.parse() error : Failed on file upload...");
+                    //$form.after().html(xhr.responseText);
+                    console.log(xhr.responseText);
+                    return;
+                }
+                if ( re['code'] ) {
+                    return app.alert(re['message']);
+                }
+                else {
+                    $row.find('.icon').html("<img width='100%' fid='"+re['data']['id']+"' src='"+re['data']['url']+"'>" +
+                            "<span class='delete-file btn btn-danger'>배너 삭제</span>"
+                    );
+                }
+                console.log(re);
+            }
+        });
+        $filebox.val('');
+    }
+
 </script>

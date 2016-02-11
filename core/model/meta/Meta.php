@@ -25,7 +25,7 @@ $users = $meta->rows("code LIKE 'google_store.%'");
         $cats = category()->loadAllArray();
  * @endcode
  *
- * @code id 는 유지한 채 키와 코드를 바꾸는 방법.
+ * @code id 를 바탕으로 값을 읽어서 id 를 유지한 채 키와 코드를 바꾸는 방법.
         $meta = meta('table-name')->load($id);
         $meta->sets(['code'=>hi('code'), 'value'=>hi('value')])->save();
  * @endcode

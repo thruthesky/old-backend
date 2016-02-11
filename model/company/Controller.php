@@ -19,6 +19,10 @@ class Controller extends Company
         echo template('company', 'header');
     }
 
+    public function footer() {
+        echo template('company', 'footer');
+    }
+
     public function frontPage() {
         echo template('company', 'frontPage');
     }

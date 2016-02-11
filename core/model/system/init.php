@@ -4,7 +4,7 @@ use core\model\system\System;
 
 
 sys()->log('core/model/system/init.php with URL : ' . url_full());
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if ( is_post() ) {
     sys()->log( http_input() );
 }
 

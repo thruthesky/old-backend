@@ -253,7 +253,7 @@ class Database extends DatabaseLayer {
      */
     public function addIndex($table_name, $fields) {
         $keyname = str_replace(',', '_', $fields);
-        $keyname = str_replace(' ', '_', $fields);
+        $keyname = str_replace(' ', '_', $keyname);
         $q = "CREATE INDEX IF NOT EXISTS $keyname ON $table_name ($fields)";
         return $this->exec($q);
     }

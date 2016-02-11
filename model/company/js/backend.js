@@ -2,6 +2,7 @@ $(function() {
     on_submit('.category-edit', on_category_edit);
     on_click('.category-edit-button', on_category_edit_form);
     on_click('.category-edit-cancel', on_category_edit_cancel);
+    on_click('.delete-category-icon', on_delete_category_icon);
 });
 function on_category_edit(e){
     e.preventDefault();
@@ -44,4 +45,16 @@ function on_category_edit_cancel(e) {
     $this.parents('.row').find('.content').show();
     $('form.category-edit').remove();
 
+}
+
+function on_delete_category_icon(e) {
+    var $this = $(this);
+    //$this.parents('.row').find('.content').show();
+    var $img = $this.parent().find('img');
+    var fid = $img.attr('fid');
+    ajax_load_route( 'data.Controller.fileDelete&id=' + fid, function(res) {
+        var re = JSON.parse(res);
+        if ( re['code'] ) return alert('파일 삭제에 실패하였습니다. ' + re['message']);
+        $this.parent().empty();
+    });
 }

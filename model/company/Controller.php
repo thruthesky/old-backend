@@ -171,48 +171,89 @@ class Controller extends Company
 
 
 
-    public function inputCategoryData() {
+    public function setCategory($code, $value, $icon) {
+
+        $in = [ 'gid' => 'company-category', 'finish' => 1, 'unique' => 1 ];
+
         $category = meta('company_category');
-        $category->set("교회", "");
-        $category->set("절", "포교당 포함");
-        $category->set("공공기관", "시청, 대사관 등");
-        $category->set("어학원", "");
-        $category->set("홈스테이", "");
-        $category->set("하숙", "");
-        $category->set("학교", "각종 교육 시설. 학원 포함.");
-        $category->set("김치/반찬", "마트, 식품점에서 따로 뺌");
-        $category->set("마트식품", "슈퍼마켓, 식품점.");
-        $category->set("망고", "");
-        $category->set("식당", "레스토랑");
-        $category->set("렌트카", "");
-        $category->set("배달운송", "통관, 배달, 운송, 해운/항공 등");
-        $category->set("약국", "");
-        $category->set("병원", "");
-        $category->set("한의원", "");
-        $category->set("안경점", "");
-        $category->set("미용뷰티", "매니큐어, 페디큐어 등 포함");
-        $category->set("건강식품", "");
-        $category->set("휴대폰", "스마트폰 포함");
-        $category->set("컴퓨터", "");
-        $category->set("인터넷", "");
-        $category->set("가전전자", "");
-        $category->set("가구", "사무용 가구, 책상, 의자 등 포함");
-        $category->set("여행사", "");
-        $category->set("부동산", "");
-        $category->set("이주이민", "");
-        $category->set("항공사", "");
-        $category->set("골프부킹", "");
-        $category->set("호텔숙박", "");
-        $category->set("리조트", "");
-        $category->set("간판인쇄", "프린팅,출력 등 포함");
-        $category->set("인테리어", "내부 설비");
-        $category->set("환전", "은행, 금융대신 환전으로 명시");
-        $category->set("방역청소", "바퀴벌레 등 벌레 청소");
-        $category->set("자동차", "자동차 판매. 중고차 포함.");
-        $category->set("정수기", "");
+        $c = $category->set($code, $value);
+        if ( $icon ) {
+            $in['code'] = $c->getRecord('id');
+            $in['from'] = "model/company/tmp/category-icon/$icon";
+            data()->copyUpload($in);
+        }
+    }
+    public function inputCategoryData() {
+
+        $this->setCategory("가구", "사무용 가구, 책상, 의자 등 포함", "furniture.png");
+        $this->setCategory("교회", "", "church.png");
+
+        $this->setCategory("절", "포교당 포함", "");
+        $this->setCategory("공공기관", "시청, 대사관 등", "gov.png");
+
+        $this->setCategory("어학원", "", "train.png");
+
+        $this->setCategory("홈스테이", "", "");
+        $this->setCategory("하숙", "", "");
+        $this->setCategory("학교", "각종 교육 시설. 학원 포함.", "school.png");
+
+        $this->setCategory("김치/반찬", "마트, 식품점에서 따로 뺌", "kimchi.png");
+
+        $this->setCategory("마트식품", "슈퍼마켓, 식품점.", "mart.png");
 
 
+        $this->setCategory("망고", "", "mango.png");
 
+        $this->setCategory("식당", "레스토랑", "restaurant.png");
+
+        $this->setCategory("렌트카", "", "rentcar.png");
+
+        $this->setCategory("배달운송", "통관, 배달, 운송, 해운/항공 등", "delivery.png");
+
+        $this->setCategory("약국", "", "drugstore.png");
+
+        $this->setCategory("병원", "", "");
+
+        $this->setCategory("한의원", "", "");
+        $this->setCategory("안경점", "", "eyeglass.png");
+
+        $this->setCategory("미용뷰티", "매니큐어, 페디큐어 등 포함", "beauty.png");
+
+        $this->setCategory("건강식품", "", "food.png");
+
+        $this->setCategory("휴대폰", "스마트폰 포함", "smartphones.png");
+
+        $this->setCategory("컴퓨터", "", "computer.png");
+
+        $this->setCategory("인터넷", "", "internet.png");
+
+        $this->setCategory("가전전자", "", "electronics.png");
+
+        $this->setCategory("여행사", "", "travel.png");
+
+        $this->setCategory("부동산", "", "realestate.png");
+
+        $this->setCategory("이주이민", "", "immigrant.png");
+
+        $this->setCategory("항공사", "", "airport.png");
+
+        $this->setCategory("골프부킹", "", "golf.png");
+
+        $this->setCategory("호텔숙박", "", "hotel.png");
+
+        $this->setCategory("리조트", "", "resort.png");
+
+        $this->setCategory("간판인쇄", "프린팅,출력 등 포함", "office.png");
+
+        $this->setCategory("인테리어", "내부 설비", "interior.png");
+
+        $this->setCategory("환전", "은행, 금융대신 환전으로 명시", "bank.png");
+
+        $this->setCategory("방역청소", "바퀴벌레 등 벌레 청소", "pest.png");
+
+        $this->setCategory("자동차", "자동차 판매. 중고차 포함.", "car.png");
+
+        $this->setCategory("정수기", "", "water.png");
     }
 }
 

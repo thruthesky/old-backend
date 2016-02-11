@@ -13,8 +13,6 @@ class EntityTest extends Entity
         $this->test_search();
         $this->test_query();
         $this->test_puts();
-
-
     }
 
     public function test_entity_table_name()
@@ -83,9 +81,7 @@ class EntityTest extends Entity
 
         $e = entity($name);
 
-
         $new_entity = $e->load("name='jaeho'");
-
 
         test($new_entity);
 
@@ -97,7 +93,6 @@ class EntityTest extends Entity
         else {
             die("<hr>Entity load failed: " . __FILE__ . ' at ' . __LINE__ );
         }
-
 
 
         /// entity count
@@ -294,22 +289,16 @@ class EntityTest extends Entity
 
     public function test_puts()
     {
-
-
         $entity = $this->createDefaultTable();
         $entity->addColumn('age', 'int');
 
         $A = $entity->create()->set('name', 'A')->set('address', 'B')->set('age', 1)->save();
 
-
-
         $item = $entity->load("name='A'");
-
 
         test( $A->get('id') == $item->get('id') );
         test( $A->get('address') == 'B' );
         test( $A->get('age') == 1 );
-
 
         $A->puts(['address'=>'Address2', 'age'=>2]);
 

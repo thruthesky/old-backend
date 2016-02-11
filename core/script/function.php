@@ -160,22 +160,14 @@ function domain_name()
  *
  * http(s)://.....com 까지 리턴한다.
  *
- * @param array $s
- * @param bool|false $use_forwarded_host
  * @return string
  */
-function url_domain( $s = array(), $use_forwarded_host = false )
+function url_domain( )
 {
-    if ( empty($s) ) $s = $_SERVER;
-    $ssl      = ( ! empty( $s['HTTPS'] ) && $s['HTTPS'] == 'on' );
-    $sp       = strtolower( $s['SERVER_PROTOCOL'] );
-    $protocol = substr( $sp, 0, strpos( $sp, '/' ) ) . ( ( $ssl ) ? 's' : '' );
-    $port     = $s['SERVER_PORT'];
-    $port     = ( ( ! $ssl && $port=='80' ) || ( $ssl && $port=='443' ) ) ? '' : ':'.$port;
-    $host     = ( $use_forwarded_host && isset( $s['HTTP_X_FORWARDED_HOST'] ) ) ? $s['HTTP_X_FORWARDED_HOST'] : ( isset( $s['HTTP_HOST'] ) ? $s['HTTP_HOST'] : null );
-    $host     = isset( $host ) ? $host : $s['SERVER_NAME'] . $port;
-    return $protocol . '://' . $host;
+    return '//' . domain_name();
 }
+
+
 
 /**
  * @param array $s
@@ -195,7 +187,22 @@ function url_domain( $s = array(), $use_forwarded_host = false )
 function url_full( $s = array(), $use_forwarded_host = false )
 {
     if ( empty($s) ) $s = $_SERVER;
-    return url_domain( $s, $use_forwarded_host ) . $s['REQUEST_URI'];
+    if ( isset($s['REQUEST_URI']) ) $uri = $s['REQUEST_URI'];
+    else $uri = null;
+    return url_domain() . $uri;
+}
+
+function is_post() {
+    if ( isset($_SERVER['REQUEST_METHOD']) ) {
+        return $_SERVER['REQUEST_METHOD'] === 'POST';
+    }
+    else return FALSE;
+}
+function is_get() {
+    if ( isset($_SERVER['REQUEST_METHOD']) ) {
+        return $_SERVER['REQUEST_METHOD'] === 'GET';
+    }
+    else return FALSE;
 }
 
 /**

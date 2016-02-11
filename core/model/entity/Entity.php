@@ -130,7 +130,30 @@ class Entity {
             return FALSE;
         }
     }
-    public function getRecord() {
+
+
+    /**
+     *
+     * 내부 레코드를 전체를 배열로 리턴한다.
+     *
+     * @note 2016-02-11 에 파라메타를 추가하여, get() 을 쓸 수 없는 경우, get() 의 역활을 할 수 있도록 하였다.
+     *      하위 클래스에서 get() 을 overriding 하는 경우, 이 함수를 사용해서 기존의 필드 값을 모두 추출 할 수 있다.
+     *
+     * @param null $field - 필드 이름. 이 값이 생략되면 전체 레코드를 배열로 리턴.
+     * @return array
+     * @code
+     * $in['code'] = $c->getRecord('id');
+     * @endcode
+     */
+    public function getRecord($field=null) {
+        if ( $field ) {
+            if ( isset($this->record[$field]) ) {
+                return $this->record[$field];
+            }
+            else {
+                return FALSE;
+            }
+        }
         return $this->record;
     }
 
@@ -338,12 +361,16 @@ class Entity {
      * @param array $ids - array() of ID(s) to retrieve.
      * @param string $fields
      * @return array|bool
+     *
+     * @attention 2016-02-10 self::load() 에서 $this->load() 로 변경을 하였다.
+     *      이에 따라서, 하위 클래스가 있으면 하위 클래스의 load() 를 사용하고 객체를 생성한다.
+     *      즉, 하위 클래스에서 load() 를 통해서 특별한 작업을 한다면, 그를 적용하는 것이다.
      */
     public function loads(array $ids, $fields='*') {
         if ( empty($ids) ) return FALSE;
         $these = array();
         foreach ($ids as $id) {
-            $these[] = self::load($id, $fields);
+            $these[] = $this->load($id, $fields);
         }
         return $these;
     }
@@ -389,11 +416,31 @@ class Entity {
      * @code
      *      return $this->loadQuery("id_root=$id_root AND id_parent>0 ORDER BY order_list ASC");
      * @endcode
+     *
+     * @note $this->load() 를 통해서 하위의 클래스가 있다면, 하위 클래스의 인스턴스를 리턴한다.
      */
     public function loadQuery($where=null, $fields='*') {
+        return $this->loads( $this->loadQueryID($where, $fields), $fields );
+    }
+
+    /**
+     *
+     * 쿼리를 통한 Entity 를 로드하는데, 결과에는 Entity id 를 배열로 리턴한다.
+     *
+     * @param null $where
+     * @param string $fields
+     * @return array
+     *
+     * @code
+     *      $ids = data()->loadQueryID( "gid='$gid' AND code='$code'" );
+     *      return self::loads( $this->loadQueryID($where, $fields), $fields );
+     * @endcode
+     *
+     */
+    public function loadQueryID($where=null, $fields='*') {
         if ( $where ) $where = "WHERE $where";
         $rows = $this->db->query("SELECT id FROM " . $this->getTableName() . " $where");
-        return self::loads( $this->getIDs($rows), $fields );
+        return $this->getIDs($rows);
     }
 
 

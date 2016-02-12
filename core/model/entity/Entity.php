@@ -173,6 +173,31 @@ class Entity {
         $this->db->delete($this->getTableName(), "id=" . self::get('id'));
         $this->record = array();
     }
+
+    /**
+     * 현재 entity 테이블의 모든 레코드를 삭제한다.
+     */
+    public function deleteAll() {
+        $table = $this->getTableName();
+        $this->db->exec("DELETE FROM $table");
+    }
+
+    /**
+     *
+     *
+     * 현재 entity 테이블을 검색하여 검색되는 레코드를 삭제한다.
+     *
+     * @param $where
+     * @code
+     * $entity->deleteQuery("id>2");
+     * @endcode
+     */
+    public function deleteQuery($where) {
+        $table = $this->getTableName();
+        $this->db->exec("DELETE FROM $table WHERE $where");
+    }
+
+
     public function deleteEntities( array $entities = array () ) {
         if ( empty($entities ) ) return;
         foreach( $entities as $entity ) {

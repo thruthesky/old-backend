@@ -15,5 +15,4 @@ class Company extends Node {
 
 
 
-
 }

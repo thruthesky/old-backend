@@ -35,10 +35,9 @@
     }
 </style>
 <div class="front-page">
-    <h1>Front</h1>
-    <div class="title">Company Categories</div>
-    <div class="desc alert alert-info" style="margin-top:.6em;">This is company category list.</div>
-    <div class="sub-title">No. of companies : <span class="count"><?php echo company()->count()?></span></div>
+
+    총 <span class="count"><?php echo company()->count()?></span> 개의 업소가 등록되어져 있습니다.
+
 
     <form>
         <input type="hidden" name="route" value="company.Controller.search">

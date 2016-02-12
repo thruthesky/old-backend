@@ -13,6 +13,8 @@ class EntityTest extends Entity
         $this->test_search();
         $this->test_query();
         $this->test_puts();
+        $this->test_delete_all();
+        $this->test_delete_query();
     }
 
     public function test_entity_table_name()
@@ -322,5 +324,46 @@ class EntityTest extends Entity
         $entity->uninit();
 
 
+    }
+
+    /**
+     *
+     * @code
+     *      php index.php route=entity.EntityTest.test_delete_all
+     * @endcode
+     */
+    public function test_delete_all()
+    {
+        $name = 'test_delete_all';
+        $entity = entity($name);
+        if ( $entity->exists() ) $entity->uninit();
+        $entity
+            ->init()
+            ->create()
+            ->save();
+        test( $entity->count() == 1, 'OK', 'ERROR');
+        $entity->deleteAll();
+        test( $entity->count() == 0, 'OK', 'ERROR');
+        $entity->uninit();
+    }
+
+    public function test_delete_query()
+    {
+        $name = 'test_delete_query';
+        $entity = entity($name);
+        if ( $entity->exists() ) $entity->uninit();
+        $entity
+            ->init()
+            ->create()
+            ->save();
+
+        $entity
+            ->create()
+            ->save();
+
+        test( $entity->count() == 2, 'OK', 'ERROR');
+        $entity->deleteQuery("id>=2");
+        test( $entity->count() == 1, 'OK', 'ERROR');
+        $entity->uninit();
     }
 }

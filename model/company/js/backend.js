@@ -1,5 +1,6 @@
 $(function() {
     on_submit('.category-edit', on_category_edit);
+    on_submit('.company-edit', on_company_edit);
     on_click('.category-edit-button', on_category_edit_form);
     on_click('.category-edit-cancel', on_category_edit_cancel);
     on_click('.delete-category-icon', on_delete_category_icon);
@@ -57,4 +58,19 @@ function on_delete_category_icon(e) {
         if ( re['code'] ) return alert('파일 삭제에 실패하였습니다. ' + re['message']);
         $this.parent().empty();
     });
+}
+
+
+function on_company_edit(e){
+    console.log("on_company_edit");
+    e.preventDefault();
+    var $form = $(this);
+    var params = $form.serialize();
+    var url = url_backend + '?' + params;
+    $.get(url, function(res){
+            var re = JSON.parse(res);
+            if ( re['code'] ) return alert(re['message']);
+            console.log("success on editing company information.")
+        })
+        .fail(function(xhr) { alert("ERROR on company-edit") });
 }

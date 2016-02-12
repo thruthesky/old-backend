@@ -33,21 +33,3 @@ $cats = category()->search([
 </form>
 <div class="company-category-list"></div>
 
-
-<script>
-
-    function on_company_edit(e){
-        e.preventDefault();
-        var $form = $(this);
-        var params = $form.serialize();
-        var url = url_backend + '?' + params;
-        $.get(url, function(res){
-            var re = JSON.parse(res);
-            if ( re['code'] ) return alert(re['message']);
-            console.log("success on editing company information.")
-        })
-                .fail(function(xhr) { alert("ERROR on company-edit") });
-    }
-    off_submit('.company-edit', on_company_edit);
-    on_submit('.company-edit', on_company_edit);
-</script>

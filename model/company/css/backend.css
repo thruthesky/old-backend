@@ -1,0 +1,24 @@
+/** ----  BASE  --------------------------- */
+body {
+    font-family: "Malgun Gothic", serif;
+}
+/** ----  EO BASE  ------------------------ */
+
+
+/** ----  LAYOUT  --------------------------- */
+/** ----  EO LAYOUT  ------------------------ */
+
+
+
+/** ----  MODULE  --------------------------- */
+
+/** MODULE Header & Footer */
+.page header, .page footer {
+    background-color: #595959;
+    color:white;
+}
+/* EO */
+
+/** ----  EO MODULE ------------------------ */
+
+

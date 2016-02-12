@@ -112,5 +112,19 @@ class Meta extends Entity {
     }
 
 
+    /**
+     *
+     * 해당 코드의 id 를 리턴한다.
+     *
+     * @return array
+     * @code
+     *  $cat = meta('code')->getID();
+     * @endcode
+     */
+    public function getID()
+    {
+        return $this->getRecord('id');
+    }
+
 
 }

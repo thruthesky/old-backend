@@ -6,9 +6,66 @@ namespace model\user;
 class Controller extends User
 {
 
+
+
     public function __construct()
     {
         parent::__construct();
+    }
+
+
+    public function test() {
+        if ( $this->exists() ) echo "OK: user entity table installed\n";
+        else die("ERROR: user entity table is not installed.");
+
+        $count = $this->count();
+        echo "$count users are exists.\n";
+    }
+
+    /**
+     *
+     */
+    public function install() {
+        $this->init();
+
+        $this->addColumn('username', 'int');
+        $this->addUniqueKey('username');
+
+
+        $this->addColumn('password', 'varchar');
+
+
+        $this->addColumn('email', 'varchar');
+        $this->addUniqueKey('email');
+
+        $this->addColumn('first_name', 'varchar');
+        $this->addColumn('last_name', 'varchar');
+        $this->addColumn('middle_name', 'varchar');
+
+        $this->addColumn('mobile', 'varchar');
+        $this->addColumn('landline', 'varchar');
+        $this->addColumn('address', 'varchar');
+
+
+        user()
+            ->create()
+            ->set('username', 'anonymous')
+            ->set('email', 'anonymous@no-email.com')
+            ->set('first_name', 'Anonymous')
+            ->set('last_name', 'Anonymous')
+            ->save();
+
+        user()
+            ->create()
+            ->set('username', 'admin')
+            ->set('password', password_encrypt('1111'))
+            ->set('first_name', 'Admin')
+            ->set('last_name', 'Admin')
+            ->set('email', 'admin@no-email.com')
+            ->save();
+
+
+        return SUCCESS();
     }
 
 
@@ -23,10 +80,7 @@ class Controller extends User
 
 
 
-    public function install() {
-        parent::install();
-        return SUCCESS();
-    }
+
 
 
     public function uninstall() {
@@ -35,6 +89,15 @@ class Controller extends User
     }
 
 
+    /**
+     * @param $in
+     * @return array
+     *
+     * @code
+     *      $ php index.php "route=user.Controller.register&username=abc&password=1234&email=abc@def.com"
+     * @endcode
+     *
+     */
     public function register($in) {
 
         if ( ! isset($in['username'] ) ) {
@@ -62,9 +125,78 @@ class Controller extends User
         else return ERROR(-4, 'Failed on saving user information.');
     }
 
+    /**
+     *
+     * 회원 로그인을 한다.
+     *
+     * 아이디와 비밀번호를 확인하고 맞으면 로그인을 한다.
+     *
+     * @param $in
+     * @return array
+     *
+     *
+     * @code
+     *      php index.php "route=user.Controller.login&username=abc&password=1234"
+     * @endcode
+     *
+     */
+    public function login($in) {
+
+        if ( !isset($in['username']) || empty($in['username'] ) ) return ERROR(-410, "Input username");
+        if ( !isset($in['password']) || empty($in['password'] ) ) return ERROR(-411, "Input password");
+
+
+        $user = user($in['username']);
+        if ( ! $user ) return ERROR(-412, "User not exists by that username - $in[username]");
+
+        if ( $user->get('password') != password_encrypt($in['password'] ) ) return ERROR(-413, "Password does not match.");
+
+
+        $this->setLogin($user);
+        $signature = user()->loginUser()->signature();
+
+        return SUCCESS( array("signature"=>$signature) );
+
+        /**
+        if ( $user->get('id') == user()->currentUser()->get('id') ) return SUCCESS();
+        else return ERROR(-415, "User login failed.");
+         */
+    }
+
+
+
+
+    public function edit() {
+
+    }
+
 
     /**
-     * 사용자 정보 추출
+     *
+     *
+     *
+     */
+    public function resign() {
+
+        
+
+
+    }
+
+    public function profile() {
+        if ( my() ) {
+
+        }
+        else {
+            return ERROR(-40119, "Login first");
+        }
+    }
+
+
+    /**
+     * 사용자 정보 추출.
+     *
+     * @note 단순히 entity::search() 를 wrapping 해서 사용하기 쉽게 하고 데이터를 JSON 으로 리턴하는 것 뿐이다.
      *
      * @param $in
      * @return array
@@ -73,7 +205,12 @@ class Controller extends User
      *
      */
     public function collect($in) {
-        $o = [];
+        $o = $in;
+        $o['return'] = 'array';
+        return SUCCESS( $this->search( $o ) );
+
+        /*
+         * $o = [];
         $o['fields'] = isset($in['fields']) ? $in['fields'] : '*';
         $o['where'] = isset($in['where']) ? $in['where'] : null;
         $o['order'] = isset($in['order']) ? $in['order'] : 'id DESC';
@@ -83,21 +220,12 @@ class Controller extends User
 
         $entities = $this->search( $o );
 
-        $data = array();
+        return SUCCESS($entities);
+        */
 
-        foreach ( $entities as $e ) {
-            $data[] = $e->getRecord();
-        }
-
-        // returns error if user model is not installed.
-        $count = count( $data ) ;
-        if ( $count == 0 ) {
-            if ( ! $this->exists() ) return ERROR( -131, "User model is not installed");
-        }
-
-
-        return SUCCESS($data);
     }
+
+
 
 }
 

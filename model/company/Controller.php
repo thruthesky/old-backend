@@ -17,6 +17,14 @@ class Controller extends Company
         echo '20160213';
     }
 
+    public function test() {
+        echo "Installation check:\n";
+        if ( $this->exists() ) echo "OK: Company data table exists.\n";
+        else echo "ERROR: Company data table does not exists.\n";
+        if ( meta('company_category')->exists() ) echo "OK: Company category table exists.\n";
+        else echo "ERROR: Company category table does not exists.\n";
+    }
+
     public function header() {
         echo template('company', 'header');
     }
@@ -124,9 +132,12 @@ class Controller extends Company
         $this->addColumn('title', 'varchar');
         $this->addColumn('ceo_name', 'varchar');
         $this->addColumn('email', 'varchar');
-        $this->addColumn('mobile', 'varchar');
+        $this->addColumn('phone', 'varchar');
         $this->addColumn('landline', 'varchar');
         $this->addColumn('kakao', 'varchar');
+
+        $this->addColumn('delivery', 'varchar');
+
 
         $this->addColumn('region', 'varchar');
         $this->addColumn('city', 'varchar');

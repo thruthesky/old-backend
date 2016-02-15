@@ -18,3 +18,11 @@ function sys() {
     if ( $global_sys  === null ) $global_sys = new System();
     return $global_sys ;
 }
+
+
+/**
+ * CLI 로 실행하는 경우, 입력값을 HTTP INPUT 으로 호환시킨다.
+ */
+if ( isset($_SERVER['argv'][1]) ) {
+    parse_str($_SERVER['argv'][1], $_http_input);
+}

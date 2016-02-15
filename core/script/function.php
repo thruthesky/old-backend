@@ -62,6 +62,18 @@ function page_no($no) {
     else return $no;
 }
 
+/**
+ *
+ * Route 호출에서 결과를 클라이언트로 전송 할 때 사용하는 함수이다.
+ *
+ * @param $data
+ *
+ * @note 이 함수는 스크립트 실행을 종료한다.
+ *
+ * @code 결과를 클라이언트에 전송하고 종료.
+ *      response(ERROR(-40111, "User not found."));
+ * @endcode
+ */
 function response( $data ) {
     echo json_encode( $data );
     exit;
@@ -88,7 +100,6 @@ function password_encrypt($str) {
 
 
 
-$_http_input = array();
 /**
  * @param null $name
  * @param null $default

@@ -20,22 +20,10 @@ foreach ( sys()->getPathUserModel() as $path ) {
 
 
 /**
- * TEST 코드 실행
+ * 전체 UNIT TEST 코드 실행
  */
 if ( isset($_SERVER['argv'][1]) && $_SERVER['argv'][1] == 'test' ) {
     sys()->runTest();
-}
-
-
-/**
- * CLI 에서 입력되는 값을 해당 route 로 전달한다.
- * 이 때, $_http_input global 변수에 입력 값을 파싱해서 집어 넣으므로서 HTTP 로 route 에 접속하는 것과 동일한 효과를 같도록 한다.
- */
-if ( isset($_SERVER['argv'][1]) ) {
-    parse_str( $_SERVER['argv'][1], $_http_input );
-    if ( isset($in['route']) ) {
-        route()->run($in['route'], $_http_input);
-    }
 }
 
 

@@ -31,6 +31,14 @@ function path_run($n = 1) {
 }
 
 
+/**
+ *
+ * It yields error message if the $code is not TRUE or it echoes a number.
+ *
+ * @param $code
+ * @param null $good
+ * @param null $bad
+ */
 function test( $code, $good=null, $bad=null ) {
     static $_count_test = 0;
     $_count_test ++;

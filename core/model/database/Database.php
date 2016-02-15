@@ -142,11 +142,6 @@ class Database extends DatabaseLayer {
     }
 
 
-
-
-
-
-
     public function count($table_name, $cond=null)
     {
         if ( $cond ) $where = "WHERE $cond";

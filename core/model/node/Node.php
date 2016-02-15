@@ -18,7 +18,6 @@ class Node extends Entity
         parent::__construct();
     }
 
-
     public function setTableName($name) {
         $name = $name . '_node';
         parent::setTableName($name);

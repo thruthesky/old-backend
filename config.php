@@ -1,4 +1,5 @@
 <?php
+define( "SYSTEM_VERSION", "0.0.1");
 define( "DIR_ROOT", __DIR__);
 define( "DIR_DATA", DIR_ROOT . '/data');
 define( "PATH_DEBUG", DIR_DATA . '/debug.log');

@@ -3,7 +3,10 @@ namespace core\model\node;
 
 class NodeTest extends Node {
     public function run() {
+
+        $this->test_name();
         $this->test_init();
+
     }
 
     private function test_init()
@@ -23,6 +26,14 @@ class NodeTest extends Node {
         test( ! $node->exists(), '', "$name Table exists" );
     }
 
+    public function test_name()
+    {
+
+        test( node('abc')->getTableName() == 'abc_node_entity' );
+
+
+
+    }
 
 
 }

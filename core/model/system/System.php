@@ -18,7 +18,7 @@ class System {
     public function __construct()
     {
         global $global_sys;
-        if ( $global_sys ) die("system is already instantiated.");
+        if ( $global_sys ) die("system is already instantiated. You cannot run any of method in System model by routing.");
             /*
         else {
             echo "instantiating...\n";

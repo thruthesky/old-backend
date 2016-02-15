@@ -36,6 +36,13 @@ class EntityTest extends Entity
         //
     }
 
+
+    public function test_name() {
+        $entity = new Entity();
+        $entity->setTableName('abc');
+        test ( $entity->getTableName() == 'abc_entity' );
+    }
+
     private function test_entity_init()
     {
         $name = 'test_entity_init';
@@ -48,7 +55,7 @@ class EntityTest extends Entity
         test( $entity->exists() == FALSE, 'OK', 'ERROR');
     }
 
-    private function test_crud()
+    public function test_crud()
     {
         $name = 'test_crud';
         $entity = entity($name);

@@ -6,6 +6,9 @@ require 'core/script/init.php';   // 초기화 코드
 require 'autoload.php';
 require 'vendor/autoload.php'; // composer package autoload
 
+
+/** ------------------ Loading Init Files ------------------- */
+
 /**
  * 모듈 init.php 파일을 여기서 로드해야, 전역으로 적용가능하다. 예) 전역 변수 설정 등.
  */
@@ -19,15 +22,30 @@ foreach ( sys()->getPathUserModel() as $path ) {
 }
 
 
-/**
+
+
+/** ---------------------------- Run Test Codes If 'php index.php test' is run ---------------------------
+ *
+ *
  * 전체 UNIT TEST 코드 실행
+ *
+ *
+ *
  */
 if ( isset($_SERVER['argv'][1]) && $_SERVER['argv'][1] == 'test' ) {
     sys()->runTest();
 }
 
 
-
+/**
+ *
+ * @short Running 'Route'. This runs route. It can be accessed through HTTP or CLI.
+ *
+ *
+ *
+ *
+ *
+ */
 if ( hi('route') ) {
     header('Access-Control-Allow-Origin: *');
     route()->run( hi('route'), hi() );

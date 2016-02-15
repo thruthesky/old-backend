@@ -10,6 +10,8 @@ class DatabaseTest extends Database {
         $this->editTable();
         $this->crudRecord();
         $this->test_table_list();
+        $this->test_rows();
+        $this->test_result();
     }
 
     private function crudTable()
@@ -169,6 +171,59 @@ class DatabaseTest extends Database {
         database()->dropTable('abcdef');
         $tables = database()->getTables();
         test( ! in_array('abcdef', $tables) );
+    }
+
+
+    /**
+     *
+     */
+    public function test_rows()
+    {
+        $db = database();
+        $table_name = "TableName2";
+        test( ! $db->tableExists($table_name), "OK.", "Table exists" );
+
+        $db->createTable($table_name);
+        test( $db->tableExists($table_name), "OK.", "Table exists" );
+
+        $db->addColumn($table_name, 'name', 'varchar');
+
+        $db->insert($table_name, ['name'=>'JaeHo Song']);
+
+        $rows = $db->rows("SELECT * FROM $table_name");
+        test( count($rows) == 1 );
+
+        $rows = $db->query("SELECT * FROM $table_name");
+        test( count($rows) == 1 );
+
+
+        $db->insert($table_name, ['name'=>'thruthesky']);
+
+        test( count( $db->rows("SELECT * FROM $table_name") ) == 2 );
+        test( count( $db->rows("SELECT * FROM $table_name WHERE id > 1") ) == 1 );
+
+        $db->dropTable($table_name);
+    }
+
+    public function test_result()
+    {
+        $db = database();
+        $table_name = "test_result";
+        $db->createTable($table_name);
+        $db->addColumn($table_name, 'name', 'varchar');
+        $db->insert($table_name, ['name'=>'AAA']);
+        $db->insert($table_name, ['name'=>'JJJ']);
+        $db->insert($table_name, ['name'=>'ZZZ']);
+
+        $id = $db->result("SELECT id FROM $table_name WHERE name='AAA'");
+        test ( $id == 1 );
+
+        $id = $db->result("SELECT id FROM $table_name WHERE name='JJJ'");
+        test ( $id == 2 );
+
+        test( $db->count( $table_name ) == 3 );
+
+        $db->dropTable($table_name);
     }
 
 }

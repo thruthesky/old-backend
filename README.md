@@ -26,6 +26,44 @@
 
 
 
+
+
+# Basic Concepts of Backend
+
+## Entity
+
+Entity is a set of data information. It is actually a database table.
+
+Entity item is a record of table.
+
+When you create a table using Entity, '_entity' is attached at the end of table name.
+
+For instance, if 'abc' is the entity name, then 'abc_entity' is the table name.
+
+
+## Node
+
+Node is a class that extends Entity.
+
+When you create a node, '_node_entity' is attached at the end of table name.
+
+For instance, if 'abc' is the node name, then 'abc_node_entity' is the table name.
+
+
+
+## Meta
+ 
+Meta is a class that extends Entity. It is more about key/value pair data set.
+
+When you create a node, '_meta_entity' is attached at the end of table name.
+
+For instance, if 'abc' is the node name, then 'abc_meta_entity' is the table name.
+
+
+
+
+
+
 # Route
 
 route 는 model.class.method 로 구성된 소스 코드 실행 경로로서 특정 모델의 클래스에 있는 메소드를 직접 실행 할 수 있게 해 준다.

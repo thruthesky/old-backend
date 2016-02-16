@@ -76,6 +76,7 @@ class Entity {
 
 
 
+
     /**
      *
      *
@@ -129,6 +130,16 @@ class Entity {
         else {
             return FALSE;
         }
+    }
+
+    /**
+     * Magic method - getter.
+     * @param $field
+     * @return bool|mixed
+     */
+    public function __get($field)
+    {
+        return self::get($field);
     }
 
 
@@ -280,7 +291,7 @@ class Entity {
      * @Attention 이 메소드는 changed 를 업데이트하지 않는다.
      * @param $field
      * @param $value
-     * @return bool
+     * @return $this|bool
      */
     public function put($field, $value) {
         if ( $id = self::get('id') ) {
@@ -581,9 +592,6 @@ class Entity {
         return $ids;
     }
 
-
-
-
     /**
      * @param $field
      * @param $where
@@ -606,7 +614,6 @@ class Entity {
      * @endcode
      */
     public function row($where=null, $fields='*') {
-
         $rows = $this->rows($where . ' LIMIT 1', $fields);
         if ( $rows ) {
             return $rows[0];
@@ -628,6 +635,13 @@ class Entity {
         return $this->db->rows("SELECT $fields FROM $table $where");
     }
 
+    public function beginTransaction() {
+        $this->db->beginTransaction();
+    }
+
+    public function endTransaction() {
+        $this->db->endTransaction();
+    }
 
 }
 

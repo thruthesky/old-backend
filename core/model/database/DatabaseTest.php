@@ -12,6 +12,7 @@ class DatabaseTest extends Database {
         $this->test_table_list();
         $this->test_rows();
         $this->test_result();
+        $this->test_transaction();
     }
 
     private function crudTable()
@@ -220,6 +221,23 @@ class DatabaseTest extends Database {
 
         $id = $db->result("SELECT id FROM $table_name WHERE name='JJJ'");
         test ( $id == 2 );
+
+        test( $db->count( $table_name ) == 3 );
+
+        $db->dropTable($table_name);
+    }
+
+    public function test_transaction()
+    {
+        $db = database();
+        $table_name = "test_result";
+        $db->createTable($table_name);
+        $db->beginTransaction();
+        $db->addColumn($table_name, 'name', 'varchar');
+        $db->insert($table_name, ['name'=>'AAA']);
+        $db->insert($table_name, ['name'=>'JJJ']);
+        $db->insert($table_name, ['name'=>'ZZZ']);
+        $db->endTransaction();
 
         test( $db->count( $table_name ) == 3 );
 

@@ -1,29 +1,5 @@
 <h1>Admin page for Company Category</h1>
-<h2>Create Company Information</h2>
-<?php
-$cats = category()->search([
-'order_by' => 'code ASC',
-'limit' => 9999,
-'return' => 'array'
-]);
-
-?>
-<form class="company-edit">
-    <input type='hidden' name='route' value='company.Controller.edit'>
-    <select name="category">
-        <?php foreach ( $cats as $cat ) { ?>
-        <option value="<?php echo $cat['id']?>"><?php echo $cat['code']?></option>
-    <?php } ?>
-    </select>
-    <input type='text' name='company_name' value='' placeholder='Company Name'>
-    <input type='text' name='mobile' value='' placeholder='Mobile Number'>
-    <input type='text' name='landline' value='' placeholder='Landline Number'>
-    <input type='text' name='ceo_name' value='' placeholder='CEO Name'>
-    <input type='text' name='address' value='' placeholder='Company Address'>
-    <input type='email' name='email' value='' placeholder='Company Email'>
-    <input type='text' name='kakao' value='' placeholder='KakaoTalk ID'>
-    <input type='submit'>
-</form>
+<?php echo template('company', 'company-edit-form')?>
 <h2>Create/Edit/Delete Categories</h2>
 <form class="category-edit">
     <input type='hidden' name='route' value='company.Controller.createCategory'>

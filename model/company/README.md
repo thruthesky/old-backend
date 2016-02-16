@@ -34,28 +34,32 @@
 먼저 전체 카테고리 및 입력되어져 있는 데이터를 삭제하고, 테이블을 제거한다.
 
 
-    php index.php route=company.Controller.deleteAllCategory ( 카테고리 정보를 삭제한다. )
-    php index.php route=company.Controller.deleteAllCompany ( 회사 정보를 삭제한다 )
-    php index.php route=company.Controller.uninstall
+    php index.php route=company.Install.deleteAllCategory ( 카테고리 정보를 삭제한다. )
+    php index.php route=company.Install.deleteAllCompany ( 회사 정보를 삭제한다 )
+    php index.php route=company.Install.uninstall
 
 을 통해서 삭제를 하고 다시 설치를 한다.
 
 ## 설치
 
-    php index.php route=company.Controller.install
+    php index.php route=company.Install.install ( DB Table 생성 )
+    php index.php route=company.Install.inputCategoryData ( 기본 카테고리 입력 )
+    php index.php route=company.Install.inputCompanyDataFromPhilgo ( 필고 데이터 포팅 )
+    
 
-## 기본 카테고리 데이터 입력 방법
 
-    php index.php route=company.Controller.inputCategoryData
 
 위와 같이 하면 model/company/tmp/category-icon/*.png 이미지 파일들을 활용하여 기본 카테고리 정보를 만든다. 
 
 
 ## 필고 Company Book 데이터를 포팅하는 방법
 
-그냥 아래와 같이 하면, 새로운 데이터가 업데이트 된다.
+그냥 아래와 같이 하면, HTTP 로 필고에 접속해서 새로운 데이터가 업데이트 된다.
 
-    php index.php route=company.Controller.inputCompanyDataFromPhilgo
+기존의 다른 정보는 놔 두고, 필고 정보만 새로 업데이트를 하므로 주기적으로 실행을 해도 된다.
+
+
+    
 
 
 
@@ -69,10 +73,6 @@
 ## 전체 회사 정보 삭제하는 방법
 
     php index.php route=company.Controller.deleteAllCompany ( 회사 정보를 삭제한다 )
-
-
-
-
 
 # 테이블 정보 - TABLES
 

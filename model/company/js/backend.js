@@ -1,9 +1,12 @@
 $(function() {
     on_submit('.category-edit', on_category_edit);
     on_submit('.company-edit', on_company_edit);
+
     on_click('.category-edit-button', on_category_edit_form);
     on_click('.category-edit-cancel', on_category_edit_cancel);
     on_click('.delete-category-icon', on_delete_category_icon);
+    on_click('.categories [cid]', on_category_view);
+
 });
 function on_category_edit(e){
     e.preventDefault();
@@ -73,4 +76,10 @@ function on_company_edit(e){
             console.log("success on editing company information.")
         })
         .fail(function(xhr) { alert("ERROR on company-edit") });
+}
+
+function on_category_view(e) {
+    var $this = $(this);
+    var cid = $this.attr('cid');
+    ajax_load_route('company.Controller.categoryView&cid='+cid);
 }

@@ -254,5 +254,11 @@ class Database extends DatabaseLayer {
     }
 
 
+    public function beginTransaction() {
+        $this->exec("BEGIN");
+    }
+    public function endTransaction() {
+        $this->exec("COMMIT");
+    }
 
 }

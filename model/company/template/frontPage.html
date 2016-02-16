@@ -48,8 +48,6 @@
     <div class="categories">
 
         <ul>
-
-
             <?php
 
             $cats = category()->loadAllArray();
@@ -63,16 +61,13 @@
             $img = "<img fid='$id' src='$url'>";
             }
             else $img = "<img src='{$url_install_dir}model/company/tmp/category-icon/marketing.png'>";
-
-?>
-
-            <li>
+            ?>
+            <li cid="<?php echo $cat['id']?>">
                 <div>
                     <?php echo $img?>
                     <span class="text"><?php echo $cat['code']?></span>
                 </div>
             </li>
-
             <?php
             }
 

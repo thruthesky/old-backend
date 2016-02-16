@@ -330,15 +330,12 @@ class Install extends Company
                     $city = trim($city);
                 }
                 else $province = $region;
-
-
-
                 echo "$region => $province : $city\n";
-
                 $com->puts(['region'=>'', 'province'=>$province, 'city'=>$city]);
             }
         }
     }
+
 
 
 }

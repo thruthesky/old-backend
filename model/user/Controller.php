@@ -178,7 +178,7 @@ class Controller extends User
      */
     public function resign() {
 
-        
+
 
 
     }
@@ -225,7 +225,9 @@ class Controller extends User
 
     }
 
-
+    public function registerForm() {
+        echo template('user', 'register_form');
+    }
 
 }
 

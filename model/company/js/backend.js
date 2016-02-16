@@ -1,7 +1,14 @@
 $(function() {
+
+    setTimeout(function(){
+        //  el.footer().find('[route="company.Controller.admin"]').click();
+        //$('[fid="482"]').click(); // 카테고리
+        //$('[route="company.Controller.admin"]').click();
+        $('[route="user.Controller.registerForm"]').click();
+    },200);
+
     on_submit('.category-edit', on_category_edit);
     on_submit('.company-edit', on_company_edit);
-
     on_click('.category-edit-button', on_category_edit_form);
     on_click('.category-edit-cancel', on_category_edit_cancel);
     on_click('.delete-category-icon', on_delete_category_icon);

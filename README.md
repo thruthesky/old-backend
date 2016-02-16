@@ -205,20 +205,12 @@ core 폴더에는 필수적인 코드와 범용적으로 쓰이는 코드들이 
 
 
 
+# User model - 사용자 모델
 
-## 사용자 모델 User model
-
-테이블은 아래와 같이 설치 및 삭제를 한다.
-
-    php index.php "route=user.Controller.install" ( 설치)
-    php index.php "route=user.Controller.installed" ( 설치 확인 )
-    php index.php "route=user.Controller.uninstall" ( 삭제 )
+model/user/README.md 파일 참고
 
 
-
-
-
-## 테스트 스크립트 작성 방법
+# 테스트 스크립트 작성 방법
 
 참고: 테스트 스크립트는 각 model 폴더의 Test.php 로 작성한다. 따라서 각 model 의 Test.php 파일을 참고한다.
 
@@ -294,16 +286,6 @@ frontend 에서 사용 할 수 있는 view 와 관련된 HTML 를 보관하는 t
 
     -- 형식) php index.php route=모델.Controller.test
     -- 예제) php index.php route=user.Controller.test
-
-
-# 회원 로그인
-
-- 모바일에서는 쿠키에 정보를 기록하지 않고, 웹브라우저 자바스크립트 변수( 메모리 )에 기록을 했다가 HTTP 입력으로 항상 전달한다.
-    -- 좀 번거롭고,
-    -- 매번 로그인을 해야한다.
-    -- 하지만, 쿠키에 남기지 않아서 더 안전하다.
-
-- 웹에서는 쿠키에 회원아이디와 사인을 기록하여 다음 접속시 로그인을 기억한다.
 
 
 

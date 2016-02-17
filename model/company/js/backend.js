@@ -4,11 +4,49 @@ $(function() {
         //  el.footer().find('[route="company.Controller.admin"]').click();
         //$('[fid="482"]').click(); // 카테고리
         //$('[route="company.Controller.admin"]').click();
-        $('[route="user.Controller.registerForm"]').click();
+        //$('[route="user.Controller.registerForm"]').click();
+
+/**
+        app.alert("안녕하세요.", 10, function() {
+            console.log('app.alert closed');
+        });
+ */
+
+        //console.log(ls.get('username'));
+        //console.log(ls.get('signature'));
+
     },200);
+
+
+    function initApp() {
+        var m = '' +
+            '<li class="item user-out">로그인</li>' +
+            '<li class="item user-in">로그아웃</li>' +
+            '<li class="item user-out">회원가입</li>' +
+            '<li class="item user-in">회원 정보 수정</li>' +
+            '<li class="item show-if-admin">관리자 페이지</li>' +
+            '<li class="item close close-panel-menu-button">메뉴닫기</li>' +
+            '';
+        app.panel.el().find('ul').append(m);
+    }
+
+    initApp();
+
+
+    ajax_load_route('user.Controller.who', function(res){
+        console.log(res);
+    });
+
+
+    on_submit('form.register', on_form_register_submit);
+    on_submit('form.login', on_form_login_submit);
+
+    on_click('.logout-button', on_logout_button);
+
 
     on_submit('.category-edit', on_category_edit);
     on_submit('.company-edit', on_company_edit);
+
     on_click('.category-edit-button', on_category_edit_form);
     on_click('.category-edit-cancel', on_category_edit_cancel);
     on_click('.delete-category-icon', on_delete_category_icon);
@@ -89,4 +127,39 @@ function on_category_view(e) {
     var $this = $(this);
     var cid = $this.attr('cid');
     ajax_load_route('company.Controller.categoryView&cid='+cid);
+}
+
+function on_form_register_submit(e) {
+    e.preventDefault();
+    ajax_load( app.urlServer() + '?' + $(this).serialize(), function(res) {
+        var re = JSON.parse( res );
+        if ( re['code'] ) return app.alert( re['message'] );
+        app.alert("회원 가입을 하였습니다.", function(){
+            ajax_load_route('user.Controller.loginForm');
+        });
+    });
+    return false;
+}
+function on_form_login_submit(e) {
+    e.preventDefault();
+    var $this = $(this);
+    var username = $this.find("[name='username']").val();
+    ajax_load( app.urlServer() + '?' + $(this).serialize(), function(res) {
+        console.log(res);
+        var re = JSON.parse( res );
+        if ( re['code'] ) return app.alert( re['message'] );
+        ls.set('username', username);
+        ls.set('signature', re['data']['signature']);
+        updateUserLogin();
+        app.alert("회원 로그인을 하였습니다.", function(res){
+            ajax_load_route( 'company.Controller.frontPage' );
+        });
+    });
+    return false;
+}
+
+
+function on_logout_button() {
+    ls.set('username', '');
+    updateUserLogin();
 }

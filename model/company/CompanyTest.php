@@ -7,8 +7,6 @@ class CompanyTest extends Company {
         $this->test_category();
     }
 
-
-
     public function test_category()
     {
         $category = meta('company_category');

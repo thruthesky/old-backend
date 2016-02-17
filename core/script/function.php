@@ -86,13 +86,25 @@ function response( $data ) {
     echo json_encode( $data );
     exit;
 }
+
 function response_error( $code, $message ) {
-    return ['code'=>$code, 'message'=>$message];
+    $re = ['code'=>$code, 'message'=>$message];
+    return $re;
 }
+
+
+/**
+ * 리턴 할 때, 현재 접속을 할 때 HTTP Input 으로 넘어온 회원 아이디를 리턴한다.
+ * @param $data
+ * @return array
+ */
 function response_success( $data ) {
-    if ( $data ) return ['code'=>0, 'data'=>$data];
-    else return ['code'=>0];
+    $re = array('code' => 0);
+    if ( hi('username') ) $re['username'] = hi('username');
+    if ( ! empty($data) ) $re['data'] = $data;
+    return $re;
 }
+
 
 function error( $code, $message ) {
     return response_error($code, $message );
@@ -211,18 +223,6 @@ function url_full( $s = array(), $use_forwarded_host = false )
     return url_domain() . $uri;
 }
 
-function is_post() {
-    if ( isset($_SERVER['REQUEST_METHOD']) ) {
-        return $_SERVER['REQUEST_METHOD'] === 'POST';
-    }
-    else return FALSE;
-}
-function is_get() {
-    if ( isset($_SERVER['REQUEST_METHOD']) ) {
-        return $_SERVER['REQUEST_METHOD'] === 'GET';
-    }
-    else return FALSE;
-}
 
 /**
  *
@@ -237,10 +237,32 @@ function url_script() {
 
 /**
  * backend 가 설치된 경로를 리턴한다.
- * @note 끝에 / 가 붙는다.
- * @return mixed
+ * @usage FORM 문장에서 backend 의 주소를 'action' 속성에 기록하고자 할 때, 이 함수를 사용하면 된다.
+ * @note 끝에 index.php 를 없애고 설치 폴더의 '/' 까지만 기록한다.
+ * @return string
  */
 function url_install_dir() {
     $url_script = url_script();
     return str_replace("/index.php", '/', $url_script);
+}
+
+/**
+ * alias of url_install_dir()
+ * @return string
+ */
+function url_site() { return url_install_dir(); }
+
+
+
+function is_post() {
+    if ( isset($_SERVER['REQUEST_METHOD']) ) {
+        return $_SERVER['REQUEST_METHOD'] === 'POST';
+    }
+    else return FALSE;
+}
+function is_get() {
+    if ( isset($_SERVER['REQUEST_METHOD']) ) {
+        return $_SERVER['REQUEST_METHOD'] === 'GET';
+    }
+    else return FALSE;
 }

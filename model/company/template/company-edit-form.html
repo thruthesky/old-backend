@@ -1,6 +1,12 @@
 <h2>업소 정보 등록</h2>
 <?php
 
+$user = user()->loginUser();
+if ( empty($user) ) {
+    echo "<h3>회원 로그인을 하십시오.</h3>";
+    return;
+}
+
 $location = new model\philocation\PhiLocation();
 //print_r($location->eng_to_ko);
 //print_r($location->ko_to_eng);

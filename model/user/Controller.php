@@ -228,6 +228,23 @@ class Controller extends User
     public function registerForm() {
         echo template('user', 'register_form');
     }
+    public function loginForm() {
+        echo template('user', 'login_form');
+    }
 
+    /**
+     * 현재 로그인한 사용자의 username 을 data['login'] 에 리턴한다.
+     *
+     * @param $in
+     * @return array
+     *      - HTTP INPUT 과
+     *      - HTTP INPUT 의 username 와 signature 로 로그인한 사용자의 username 을 data['login'] 에 리턴한다.
+     */
+    public function who($in) {
+        $re = $in;
+        $user = user()->loginUser();
+        if ( $user ) $re['username'] = $user->username;
+        return SUCCESS( $re );
+    }
 }
 

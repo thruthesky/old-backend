@@ -43,7 +43,7 @@ class Controller extends Company
 
 
     public function editForm() {
-
+        echo template('company', 'company-edit-form');
     }
     public function edit() {
         sys()->log("company\\Controller::edit()");

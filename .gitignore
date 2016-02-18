@@ -1,2 +1,5 @@
 .idea
-./data
+data/upload
+data/backend.sqlite
+data/debug.log
+

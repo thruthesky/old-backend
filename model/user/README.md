@@ -19,9 +19,53 @@
 
 회원 가입 코드는 임의로 작성하면 된다.
 
-user.Controller.registerForm 이 예제로서 좋으니 살펴보도록 한다.
+특히, 회원 가입을 다루는 HTML 과 자바스크립트 ajax call 을 직접 작성해야한다.
 
-- 폼 전송을 하면 form submit 이벤트를 받아서 ajax 로 처리한다.
+HTML 과 자바스크립트 코드는 아래와 같이 비교적 간단한다.
+
+예제) HTML 코드
+
+    <h2>회원 등록</h2>
+    <form class="user-register" action="<?php echo url_site()?>">
+        <input type="hidden" name="route" value="user.Controller.register">
+        <div class="username"><input type="text" name="username" placeholder="사용자 아이디" required></div>
+        <div class="password"><input type="password" name="password" placeholder="사용자 비밀번호" required></div>
+        <div class="first-name"><input type="text" name="first_name" placeholder="First Name" required></div>
+        <div class="middle-name"><input type="text" name="middle_name" placeholder="Middle Name"></div>
+        <div class="last-name"><input type="text" name="last_name" placeholder="Last Name" required></div>
+        <div class="email"><input type="email" name="email" placeholder="메일주소" required></div>
+        <div class="mobile"><input type="number" name="mobile" placeholder="휴대폰 번호. 숫자만 입력." required></div>
+        <div class="mobile"><input type="number" name="landline" placeholder="유선 전화 번호. 숫자만 입력."></div>
+        <div class="address"><input type="text" name="address" placeholder="주소"></div>
+        <div class="submit"><input type="submit" value="회원 가입하기"></div>
+    </form>
+
+위 예제를 보면, 별거 없다는 것을 알 수 있다.
+
+
+HTML 예제는 user.Controller.registerForm 이 예제로서 좋으니 살펴보도록 한다.
+
+
+예제) 자바스크립트 코드
+
+
+    on_submit('form.user-register', on_form_user_register_submit); // 이벤트 리스닝
+
+    function on_form_user_register_submit(e) { // 실제 처리 루틴.
+        e.preventDefault();
+        ajax_load( app.urlServer() + '?' + $(this).serialize(), function(res) {
+            var re = JSON.parse( res );
+            if ( re['code'] ) return app.alert( re['message'] );
+            app.alert("회원 가입을 하였습니다.", function(){
+                ajax_load_route('user.Controller.loginForm');
+            });
+        });
+        return false;
+    }
+
+위 자바스크립트 예제는 매우 간단하다. 그냥 폼을 backend 로 전성하고 결과만 받는다.
+
+위 코드는 route=user.Controller.register 를 참조하므로 해당 router 를 살펴본다.
 
 
 
@@ -105,5 +149,40 @@ user.Controller.who 는 로그인이 틀린 경우, 아래와 같이 정보를 �
     
     - updateUserLogin() 을 호출하다.
 
+
+# 회원 정보 변경.
+
+회원 가입은 정보를 GET 방식으로 전달해도 되지만, 회원 정보 수정은 POST 방식이어야 한다.
+
+HTML 은 route=user.Controller.editForm 을 참고한다.
+
+자바스크립트 예제는 아래와 같다.
+
+예제) 아래와 같이 POST 로 전달하면 된다.
+
+function on_form_user_edit_submit(e) {
+    e.preventDefault();
+    var $form = $(this);
+    var params = $form.serialize();
+    var o = {
+        'url' : url_backend,
+        'data' : params + '&username=' + ls.get('username') + '&signature=' + ls.get('signature'),
+        'type' : 'POST'
+    };
+    ajax_load(o, function(res) {
+        console.log(res);
+        var re = JSON.parse( res );
+        if ( re['code'] ) return alert( re['message'] );
+    });
+    return false;
+}
+
+
+
+# 도움 함수들
+
+init.php 에 들어있다.
+
+login() 함수는 현재 로그인한 사용자의 사용자 객체를 리턴한다.
 
 

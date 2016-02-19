@@ -115,6 +115,13 @@ class Controller extends User
         $sets['username'] = $in['username'];
         $sets['password'] = password_encrypt($in['password']);
         $sets['email'] = $in['email'];
+        $sets['first_name'] = hi('first_name', '');
+        $sets['middle_name'] = hi('middle_name', '');
+        $sets['last_name'] = hi('last_name');
+        $sets['mobile'] = hi('mobile', '');
+        $sets['landline'] = hi('landline', '');
+        $sets['address'] = hi('address');
+
 
         $re = user()
             ->create()
@@ -123,6 +130,31 @@ class Controller extends User
 
         if ( $re ) return SUCCESS();
         else return ERROR(-4, 'Failed on saving user information.');
+    }
+
+    public function edit($in) {
+
+        if ( ! login() ) return ERROR(-400201, "Login first");
+        $sets = array();
+        if ( isset($in['password']) && ! empty($in['password']) ) {
+            $sets['password'] = password_encrypt($in['password']);
+        }
+        $sets['email'] = $in['email'];
+
+        $sets['first_name'] = hi('first_name', '');
+        $sets['middle_name'] = hi('middle_name', '');
+        $sets['last_name'] = hi('last_name');
+        $sets['mobile'] = hi('mobile', '');
+        $sets['landline'] = hi('landline', '');
+        $sets['address'] = hi('address');
+
+        $sets['updated'] = time();
+
+        $login = login()->puts($sets);
+
+        if ( empty($login) ) return ERROR(-400204, "Update failed.");
+
+        return SUCCESS();
     }
 
     /**
@@ -166,10 +198,6 @@ class Controller extends User
 
 
 
-    public function edit() {
-
-    }
-
 
     /**
      *
@@ -183,14 +211,6 @@ class Controller extends User
 
     }
 
-    public function profile() {
-        if ( my() ) {
-
-        }
-        else {
-            return ERROR(-40119, "Login first");
-        }
-    }
 
 
     /**
@@ -230,6 +250,15 @@ class Controller extends User
     }
     public function loginForm() {
         echo template('user', 'login_form');
+    }
+
+    public function editForm() {
+        if ( login() ) {
+            echo template('user', 'edit_form');
+        }
+        else {
+            return ERROR(-40119, "Login first");
+        }
     }
 
     /**

@@ -15,16 +15,25 @@ $(function() {
         //console.log(ls.get('username'));
         //console.log(ls.get('signature'));
 
-    },200);
+
+        //$('[route="user.Controller.editForm"]').click();//회사 정보 등록
+ajax_load_route('company.Controller.view&id=3692'); // 회사 정보 번호 3692 번 열기
+
+
+
+
+    },300);
 
 
     function initApp() {
         var m = '' +
-            '<li class="item user-out">로그인</li>' +
-            '<li class="item user-in">로그아웃</li>' +
-            '<li class="item user-out">회원가입</li>' +
-            '<li class="item user-in">회원 정보 수정</li>' +
-            '<li class="item show-if-admin">관리자 페이지</li>' +
+            '<li class="item user-out" route="user.Controller.loginForm">로그인</li>' +
+            '<li class="item user-in logout-button">로그아웃</li>' +
+            '<li class="item user-out" route="user.Controller.registerForm">회원가입</li>' +
+            '<li class="item user-in" route="user.Controller.editForm">회원 정보 수정</li>' +
+            '<li class="item" username="admin" route="company.Controller.admin">관리자 페이지</li>' +
+            '<li class="item" username="user3" route="company.Controller.admin">user3</li>' +
+            '<li class="item" username="" route="company.Controller.admin">비 로그인</li>' +
             '<li class="item close close-panel-menu-button">메뉴닫기</li>' +
             '';
         app.panel.el().find('ul').append(m);
@@ -38,7 +47,8 @@ $(function() {
     });
 
 
-    on_submit('form.register', on_form_register_submit);
+    on_submit('form.user-register', on_form_user_register_submit);
+    on_submit('form.user-edit', on_form_user_edit_submit);
     on_submit('form.login', on_form_login_submit);
 
     on_click('.logout-button', on_logout_button);
@@ -50,7 +60,7 @@ $(function() {
     on_click('.category-edit-button', on_category_edit_form);
     on_click('.category-edit-cancel', on_category_edit_cancel);
     on_click('.delete-category-icon', on_delete_category_icon);
-    on_click('.categories [cid]', on_category_view);
+    on_click('.categories [cid]', on_category_click);
 
 });
 function on_category_edit(e){
@@ -115,21 +125,24 @@ function on_company_edit(e){
     var $form = $(this);
     var params = $form.serialize();
     var url = url_backend + '?' + params;
-    $.get(url, function(res){
-            var re = JSON.parse(res);
-            if ( re['code'] ) return alert(re['message']);
-            console.log("success on editing company information.")
-        })
-        .fail(function(xhr) { alert("ERROR on company-edit") });
+    ajax_load(url, function(res) {
+        console.log(res);
+        var re = JSON.parse(res);
+        if ( re['code'] ) return alert(re['message']);
+        //console.log("success on editing company information.")
+        alert("회사 정보를 등록하였습니다.");
+        ajax_load_route('company.Controller.view&id='+re['data']['id']);
+    });
+
 }
 
-function on_category_view(e) {
+function on_category_click(e) {
     var $this = $(this);
     var cid = $this.attr('cid');
-    ajax_load_route('company.Controller.categoryView&cid='+cid);
+    ajax_load_route('company.Controller.collect&cid='+cid);
 }
 
-function on_form_register_submit(e) {
+function on_form_user_register_submit(e) {
     e.preventDefault();
     ajax_load( app.urlServer() + '?' + $(this).serialize(), function(res) {
         var re = JSON.parse( res );
@@ -137,6 +150,24 @@ function on_form_register_submit(e) {
         app.alert("회원 가입을 하였습니다.", function(){
             ajax_load_route('user.Controller.loginForm');
         });
+    });
+    return false;
+}
+
+function on_form_user_edit_submit(e) {
+    e.preventDefault();
+    var $form = $(this);
+    var params = $form.serialize();
+    var o = {
+        'url' : url_backend,
+        'data' : params + '&username=' + ls.get('username') + '&signature=' + ls.get('signature'),
+        'type' : 'POST'
+    };
+    ajax_load(o, function(res) {
+        console.log(res);
+        var re = JSON.parse( res );
+        if ( re['code'] ) return alert( re['message'] );
+        alert("회원 정보를 수정하였습니다.");
     });
     return false;
 }
@@ -157,7 +188,6 @@ function on_form_login_submit(e) {
     });
     return false;
 }
-
 
 function on_logout_button() {
     ls.set('username', '');

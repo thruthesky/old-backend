@@ -1,5 +1,12 @@
-<h1>Admin page for Company Category</h1>
-<?php echo template('company', 'company-edit-form')?>
+<h1>Admin page</h1>
+
+<?php
+    if ( ! isAdmin() ) {
+     echo "You are not admin!";
+     return;
+     }
+?>
+
 <h2>Create/Edit/Delete Categories</h2>
 <form class="category-edit">
     <input type='hidden' name='route' value='company.Controller.createCategory'>

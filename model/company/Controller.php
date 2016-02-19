@@ -53,24 +53,34 @@ class Controller extends Company
         if ( empty($company_name) ) return ERROR( -437, "Input company name" );
         if ( empty($email) ) return ERROR( -439, "Input email");
 
-        $e = $this->load("company_name='$company_name'");
-        if ( $e ) return ERROR( -438, "Company name exists.");
+        //$e = $this->load("company_name='$company_name'");
+        //if ( $e ) return ERROR( -438, "Company name exists.");
 
-        $e = $this->load("email='$email'");
-        if ( $e ) return ERROR( -440, "Company email exists.");
+        //$e = $this->load("email='$email'");
+        //if ( $e ) return ERROR( -440, "Company email exists.");
 
         $entity = $this
             ->create()
             ->set('company_name', $company_name)
+            ->set('title', hi('title'))
             ->set('ceo_name', hi('ceo_name'))
+            ->set('email', $email)
             ->set('mobile', hi('mobile'))
             ->set('landline', hi('landline'))
-            ->set('email', $email)
             ->set('address', hi('address'))
             ->set('kakao', hi('kakao'))
+            ->set('delivery', hi('delivery'))
+            ->set('region', hi('region'))
+            ->set('province', hi('province'))
+            ->set('city', hi('city'))
+            ->set('address', hi('address'))
+            ->set('homepage', hi('homepage'))
+            ->set('etc', hi('etc'))
+            ->set('content', hi('content'))
+            ->set('gid', hi('gid'))
             ->save();
 
-        if ( $entity ) return SUCCESS();
+        if ( $entity ) return SUCCESS( array('id'=>$entity->id) );
         else return ERROR(-431, "Failed on creating/updating company information");
     }
 
@@ -132,8 +142,18 @@ class Controller extends Company
     }
 
 
+    /*
     public function categoryView($in) {
         echo template('company', 'categoryView');
+    }
+    */
+
+    public function collect($in) {
+        echo template('company', 'company_list');
+    }
+
+    public function view($in) {
+        echo template('company', 'view');
     }
 }
 

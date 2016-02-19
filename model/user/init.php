@@ -44,7 +44,7 @@ function user($username=null) {
     else return new User();
 }
 
-function my() {
+function login() {
     return user()->loginUser();
 }
 
@@ -69,4 +69,13 @@ function user_email_exists($email) {
     $user = user()->load("email='$email'");
     if ( $user ) return $user->is();
     else return FALSE;
+}
+
+/**
+ * 관리자이면 참을 리턴한다.
+ * @return bool
+ */
+function isAdmin() {
+    if ( ! login() || login()->username != 'admin' ) return FALSE;
+    else return TRUE;
 }

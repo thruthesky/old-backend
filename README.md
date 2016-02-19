@@ -13,6 +13,9 @@
 
 # TODO
 
+    - user model 을 core 로 이동한다.
+
+
     user 모델에서
 
     웹으로 로그인/로그아웃하는 것. setLogin(), setLogout() 에서 웹 접속이며 쿠키를 남김.
@@ -301,3 +304,8 @@ frontend 에서 사용 할 수 있는 view 와 관련된 HTML 를 보관하는 t
     $db->insert($table_name, ['name'=>'JJJ']);
     $db->insert($table_name, ['name'=>'ZZZ']);
     $db->endTransaction();
+
+# 사용자
+
+관리자는 항상 username 이 admin 이다.
+

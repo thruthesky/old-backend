@@ -246,9 +246,12 @@ model/user/README.md 파일 참고
 
 # template 사용하기
 
-model/model-name/template 에는 HTML 파일을 저장한다.
+model/model-name/template 에는 PHP 파일을 저장한다.
 
-( core 에는 template 폴더가 없다. )
+- core 에는 template 폴더가 없다.
+- 확장자를 php 로 한 이유는 각종 편집기에서 PHP 파일로 인식하게 하기 위해서이다.
+- template() 은 함수이다. 따라서 tmeplate PHP 파일이 함수 안에서 실행되므로 적절한 글로벌 변수 처리가 필요하다.
+
 
 
 backend 에는 특별히 view 가 없는데,

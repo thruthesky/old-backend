@@ -7,6 +7,9 @@ require 'autoload.php';
 require 'vendor/autoload.php'; // composer package autoload
 
 
+/** Sending 'Access Control Allow Origin' MUST be before loading init files. */
+if ( ! is_cli() ) header('Access-Control-Allow-Origin: *');
+
 /** ------------------ Loading Init Files ------------------- */
 
 /**
@@ -48,7 +51,6 @@ if ( isset($_SERVER['argv'][1]) && $_SERVER['argv'][1] == 'test' ) {
  *
  *
  */
-if ( ! is_cli() ) header('Access-Control-Allow-Origin: *');
 if ( hi('route') ) {
     route()->run( hi('route'), hi() );
 }

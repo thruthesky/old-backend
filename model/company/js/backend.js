@@ -26,19 +26,6 @@ $(function() {
     },300);
 
 
-    function initApp() {
-        var m = '' +
-            '<li class="item user-out" route="user.Controller.loginForm">로그인</li>' +
-            '<li class="item user-in logout-button">로그아웃</li>' +
-            '<li class="item user-out" route="user.Controller.registerForm">회원가입</li>' +
-            '<li class="item user-in" route="user.Controller.editForm">회원 정보 수정</li>' +
-            '<li class="item" username="admin" route="company.Controller.admin">관리자 페이지</li>' +
-            '<li class="item" username="user3" route="company.Controller.admin">user3</li>' +
-            '<li class="item" username="" route="company.Controller.admin">비 로그인</li>' +
-            '<li class="item close close-panel-menu-button">메뉴닫기</li>' +
-            '';
-        app.panel.el().find('ul').append(m);
-    }
 
     initApp();
 
@@ -65,6 +52,13 @@ $(function() {
     on_click('.delete-category-icon', on_delete_category_icon);
     on_click('.categories [cid]', on_category_click);
 
+    function on_click_cache_reset() {
+        ls.deleteAll();
+        ajax_load_route('company.Controller.frontPage');
+    }
+
+    on_click('.cache-reset', on_click_cache_reset);
+    on_click('.home-button,.front-button', goTop);
 });
 function on_category_edit(e){
     e.preventDefault();
@@ -194,5 +188,22 @@ function on_form_login_submit(e) {
 
 function on_logout_button() {
     ls.set('username', '');
+    updateUserLogin();
+}
+
+function initApp() {
+    var m = '' +
+        '<li class="item user-out" route="user.Controller.loginForm">로그인</li>' +
+        '<li class="item user-in logout-button">로그아웃</li>' +
+        '<li class="item user-out" route="user.Controller.registerForm">회원가입</li>' +
+        '<li class="item user-in" route="user.Controller.editForm">회원 정보 수정</li>' +
+        '<li class="item" username="admin" route="company.Controller.admin">관리자 페이지</li>' +
+            // '<li class="item" username="user3" route="company.Controller.admin">user3</li>' +
+            // '<li class="item" username="" route="company.Controller.admin">비 로그인</li>' +
+
+        '<li class="item cache-reset">캐시 초기화</li>' +
+        '<li class="item close close-panel-menu-button">메뉴닫기</li>' +
+        '';
+    app.panel.el().find('ul').append(m);
     updateUserLogin();
 }

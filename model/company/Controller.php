@@ -61,6 +61,7 @@ class Controller extends Company
 
         $entity = $this
             ->create()
+            ->set('category', hi('category', 0))
             ->set('company_name', $company_name)
             ->set('title', hi('title'))
             ->set('ceo_name', hi('ceo_name'))
@@ -155,5 +156,6 @@ class Controller extends Company
     public function view($in) {
         echo template('company', 'view');
     }
+
 }
 

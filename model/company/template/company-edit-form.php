@@ -60,7 +60,7 @@ $cities = $location->ko_to_eng;
         배달가능
         <input type="checkbox" id="delivery" name="delivery">
     </label>
-    <input type='text' name='address' value='' placeholder='홈페이지 주소'>
+    <input type='text' name='homepage' value='' placeholder='홈페이지 주소'>
 
     <textarea name='content' value='' placeholder='설명을 입력하십시오.'></textarea>
 

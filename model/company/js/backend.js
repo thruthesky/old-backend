@@ -17,7 +17,8 @@ $(function() {
 
 
         //$('[route="user.Controller.editForm"]').click();//회사 정보 등록
-ajax_load_route('company.Controller.view&id=3692'); // 회사 정보 번호 3692 번 열기
+//ajax_load_route('company.Controller.view&id=3685'); // 회사 정보 번호 3692 번 열기
+        //ajax_load_route('company.Controller.view&id=41'); // 회사 정보 번호 3692 번 열기
 
 
 
@@ -42,10 +43,12 @@ ajax_load_route('company.Controller.view&id=3692'); // 회사 정보 번호 3692
     initApp();
 
 
+    /*
     ajax_load_route('user.Controller.who', function(res){
         console.log(res);
     });
 
+*/
 
     on_submit('form.user-register', on_form_user_register_submit);
     on_submit('form.user-edit', on_form_user_edit_submit);
@@ -139,7 +142,7 @@ function on_company_edit(e){
 function on_category_click(e) {
     var $this = $(this);
     var cid = $this.attr('cid');
-    ajax_load_route('company.Controller.collect&cid='+cid);
+    ajax_load_route('company.Controller.collect&cid='+cid, null, 60 * 60 * 24 * 7);
 }
 
 function on_form_user_register_submit(e) {

@@ -43,6 +43,9 @@ class Install extends Company
         $this->addColumn('address', 'varchar');
 
         $this->addColumn('homepage', 'varchar');
+
+        $this->addColumn('content', 'varchar');
+
         $this->addColumn('etc', 'varchar');
         $this->addColumn('source', 'varchar');
 
@@ -150,6 +153,8 @@ class Install extends Company
         $this->setCategory("안경점", "", "eyeglass.png");
 
         $this->setCategory("미용/뷰티", "매니큐어, 페디큐어 등 포함", "beauty.png");
+
+        $this->setCategory("마사지", "", "");
 
         $this->setCategory("건강식품", "", "food.png");
 

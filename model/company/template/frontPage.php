@@ -70,43 +70,7 @@
             </li>
             <?php
             }
-
-
-            /*
-            <li route="company.Controller.getCategory&category=Church" callback="display_company_list"><div><img src="img/category-icons/church.png"><span class="text">Church</span></div></li>
-            <li><div><img src="img/category-icons/gov.png"><span class="text">공공기관</span></div></li>
-            <li><div><img src="img/category-icons/train.png"><span class="text">어학원</span></div></li>
-            <li><div><img src="img/category-icons/school.png"><span class="text">교육시설</span></div></li>
-            <li ><div><img src="img/category-icons/kimchi.png"><span class="text">Food</span></div></li>
-            <li ><div><img src="img/category-icons/mart.png"><span class="text">마트식품</span></div></li>
-            <li><div><img src="img/category-icons/mango.png"><span class="text">망고</span></div></li>
-            <li><div><img src="img/category-icons/restaurant.png"><span class="text">레스토랑</span></div></li>
-            <li><div><img src="img/category-icons/rentcar.png"><span class="text">렌트카</span></div></li>
-            <li ><div><img src="img/category-icons/delivery.png"><span class="text">통관운송</span></div></li>
-            <li><div><img src="img/category-icons/drugstore.png"><span class="text">약국</span></div></li>
-            <li><div><img src="img/category-icons/eyeglass.png"><span class="text">안경점</span></div></li>
-            <li ><div><img src="img/category-icons/beauty.png"><span class="text">미용뷰티</span></div></li>
-            <li><div><img src="img/category-icons/food.png"><span class="text">건강식품</span></div></li>
-            <li ><div><img src="img/category-icons/internet.png"><span class="text">인터넷</span></div></li>
-            <li ><div><img src="img/category-icons/electronics.png"><span class="text">가전전자</span></div></li>
-            <li><div><img src="img/category-icons/smartphones.png"><span class="text">휴대폰</span></div></li>
-            <li><div><img src="img/category-icons/computer.png"><span class="text">컴퓨터</span></div></li>
-            <li><div><img src="img/category-icons/furniture.png"><span class="text">가구</span></div></li>
-            <li><div><img src="img/category-icons/travel.png"><span class="text">여행사</span></div></li>
-            <li ><div><img src="img/category-icons/immigrant.png"><span class="text">이주이민</span></div></li>
-            <li><div><img src="img/category-icons/airport.png"><span class="text">항공사</span></div></li>
-            <li ><div><img src="img/category-icons/golf.png"><span class="text">골프부킹</span></div></li>
-            <li ><div><img src="img/category-icons/hotel.png"><span class="text">호텔숙박</span></div></li>
-            <li><div><img src="img/category-icons/resort.png"><span class="text">리조트</span></div></li>
-            <li><div><img src="img/category-icons/realestate.png"><span class="text">부동산</span></div></li>
-            <li><div><img src="img/category-icons/office.png"><span class="text">간판인쇄</span></div></li>
-            <li><div><img src="img/category-icons/interior.png"><span class="text">인테리어</span></div></li>
-            <li ><div><img src="img/category-icons/bank.png"><span class="text">은행금융</span></div></li>
-            <li ><div><img src="img/category-icons/pest.png"><span class="text">방역청소</span></div></li>
-            <li ><div><img src="img/category-icons/car.png"><span class="text">자동차</span></div></li>
-            <li ><div><img src="img/category-icons/water.png"><span class="text">정수기</span></div></li>
-            */
-            ?>
+?>
         </ul>
     </div>
 

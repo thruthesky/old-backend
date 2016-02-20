@@ -7,7 +7,11 @@ require 'autoload.php';
 require 'vendor/autoload.php'; // composer package autoload
 
 
-/** Sending 'Access Control Allow Origin' MUST be before loading init files. */
+/**
+ * Sending 'Access Control Allow Origin' MUST be before loading init files,
+ * Since, init.php files may end the run time.
+ *
+ */
 if ( ! is_cli() ) header('Access-Control-Allow-Origin: *');
 
 /** ------------------ Loading Init Files ------------------- */

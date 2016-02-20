@@ -3,9 +3,15 @@ use model\user\User;
 
 /**
  *
- * http input 으로 username 과 signature 가 들어오면 자동으로 사용자 정보를 확인한다.
- * 이 두 값을 입력하지 않으면 사용자 정보를 확인하지 않는다.
  *
+ *
+ * It checks the username and signature of HTTP input.
+ *
+ * @note it does not check any thing if there is no username and signature.
+ *
+ * @Attention it stops the run time ONLY if the user's signature does not match with his username.
+ *
+ *      - if user is not found, then it just continues the running.
  */
 if ( hi('username') && hi('signature') ) {
     $user = user( hi('username') );
@@ -15,7 +21,7 @@ if ( hi('username') && hi('signature') ) {
         }
         else response( ERROR(-40112, "Signature does not match"));
     }
-    else response(ERROR(-40111, "User not found."));
+    //else response(ERROR(-40111, "User not found."));
 }
 else {
     // response(ERROR(-40113, "username and signature not provided."));
@@ -24,13 +30,15 @@ else {
 
 /**
  *
- * 회원 정보 User object 를 리턴한다.
+ *
+ * Returns user object.
  *
  *
  *
+ * @param null
  *
- * @param null $username 숫자이면 회원번호, 문자이면 username 으로 인식하여 회원 정보를 리턴한다.
- *
+ *      - If $username is a numeric, then it assumes as user id.
+ *      - If it is not numeric, then it assumes as username.
  *
  * @return User
  */
@@ -49,7 +57,9 @@ function login() {
 }
 
 /**
- * 사용자가 존재하면 참을 아니면 거짓을 리턴한다.
+ *
+ *
+ * Returns TRUE if user exist. Or returns FALSE if user is not exists.
  *
  * @param $id_username
  * @return bool|mixed
@@ -72,7 +82,8 @@ function user_email_exists($email) {
 }
 
 /**
- * 관리자이면 참을 리턴한다.
+ *
+ * Returns TRUE if the log-in user is admin.
  * @return bool
  */
 function isAdmin() {

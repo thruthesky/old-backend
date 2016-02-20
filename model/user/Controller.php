@@ -2,7 +2,11 @@
 
 namespace model\user;
 
-
+/**
+ * Class Controller
+ *
+ * @package model\user
+ */
 class Controller extends User
 {
 
@@ -159,9 +163,11 @@ class Controller extends User
 
     /**
      *
-     * 회원 로그인을 한다.
+     * Log-in user.
      *
-     * 아이디와 비밀번호를 확인하고 맞으면 로그인을 한다.
+     * @note This returns signature IF the username & password is correct.
+     *
+     *
      *
      * @param $in
      * @return array
@@ -214,35 +220,27 @@ class Controller extends User
 
 
     /**
-     * 사용자 정보 추출.
      *
-     * @note 단순히 entity::search() 를 wrapping 해서 사용하기 쉽게 하고 데이터를 JSON 으로 리턴하는 것 뿐이다.
+     * Returns the user information in ARRAY.
+     *
+     * @note This only wraps entity::search() and returns in JSON array.
+     *
+     *
+     *
      *
      * @param $in
      * @return array
      *
      * @usage php index.php "route=user.Controller.collect&limit=5"
      *
+     * @note It is same call as
+     *      - php index.php "route=user.Controller.search&limit=5&return=array"
+     *
      */
     public function collect($in) {
         $o = $in;
         $o['return'] = 'array';
         return SUCCESS( $this->search( $o ) );
-
-        /*
-         * $o = [];
-        $o['fields'] = isset($in['fields']) ? $in['fields'] : '*';
-        $o['where'] = isset($in['where']) ? $in['where'] : null;
-        $o['order'] = isset($in['order']) ? $in['order'] : 'id DESC';
-        $o['limit'] = isset($in['limit']) ? $in['limit'] : 10;
-        $o['page'] = isset($in['page']) ? $in['page'] : 1;
-        $o['offset'] = isset($in['offset']) ? $in['offset'] : 0;
-
-        $entities = $this->search( $o );
-
-        return SUCCESS($entities);
-        */
-
     }
 
     public function registerForm() {
@@ -262,12 +260,14 @@ class Controller extends User
     }
 
     /**
-     * 현재 로그인한 사용자의 username 을 data['login'] 에 리턴한다.
+     *
+     * Checks 'who am I' or gets the login username.
      *
      * @param $in
      * @return array
-     *      - HTTP INPUT 과
-     *      - HTTP INPUT 의 username 와 signature 로 로그인한 사용자의 username 을 data['login'] 에 리턴한다.
+     *      - The input HTTP variable & login username in "data['login']"
+     *
+     *
      */
     public function who($in) {
         $re = $in;

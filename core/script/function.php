@@ -1,5 +1,14 @@
 <?php
+/**
+ * @file function.php
+ */
 
+/**
+ * @return bool
+ */
+function is_cli() {
+    return php_sapi_name() == 'cli';
+}
 /**
  * @short returns a UNIQUE ID
  *

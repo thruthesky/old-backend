@@ -1,8 +1,8 @@
 <?php
 
-require 'config.php';   // 각종 경로 및 초기 값 설정
-require 'core/script/function.php';   // 각종 경로 및 초기 값 설정
-require 'core/script/init.php';   // 초기화 코드
+require 'config.php';   //
+require 'core/script/function.php';   //
+require 'core/script/init.php';   // Initialization code for system.
 require 'autoload.php';
 require 'vendor/autoload.php'; // composer package autoload
 
@@ -10,7 +10,8 @@ require 'vendor/autoload.php'; // composer package autoload
 /** ------------------ Loading Init Files ------------------- */
 
 /**
- * 모듈 init.php 파일을 여기서 로드해야, 전역으로 적용가능하다. 예) 전역 변수 설정 등.
+ *
+ * Loads init.php files for core module and user module.
  */
 foreach ( sys()->getPathCoreModel() as $path ) {
     $init = "$path/init.php";
@@ -27,7 +28,8 @@ foreach ( sys()->getPathUserModel() as $path ) {
 /** ---------------------------- Run Test Codes If 'php index.php test' is run ---------------------------
  *
  *
- * 전체 UNIT TEST 코드 실행
+ *
+ * Run unit test.
  *
  *
  *
@@ -46,8 +48,8 @@ if ( isset($_SERVER['argv'][1]) && $_SERVER['argv'][1] == 'test' ) {
  *
  *
  */
+if ( ! is_cli() ) header('Access-Control-Allow-Origin: *');
 if ( hi('route') ) {
-    header('Access-Control-Allow-Origin: *');
     route()->run( hi('route'), hi() );
 }
 

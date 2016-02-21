@@ -1,5 +1,5 @@
 <style>
-    form.register .password .input {
+    form.user-edit .password .input {
         display:none;
     }
 </style>

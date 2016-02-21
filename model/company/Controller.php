@@ -50,6 +50,7 @@ class Controller extends Company
         $company_name = hi('company_name');
         $email = hi('email');
 
+        if ( ! login() ) return ERROR(-436, "Login first");
         if ( empty($company_name) ) return ERROR( -437, "Input company name" );
         if ( empty($email) ) return ERROR( -439, "Input email");
 
@@ -59,8 +60,18 @@ class Controller extends Company
         //$e = $this->load("email='$email'");
         //if ( $e ) return ERROR( -440, "Company email exists.");
 
+        if ( hi('id') ) {
+            $this->load(hi('id'));
+        }
+        else {
+            $this
+                ->create()
+                ->set('username', login()->username)
+                ->set('gid', hi('gid'))
+            ;
+        }
+
         $entity = $this
-            ->create()
             ->set('category', hi('category', 0))
             ->set('company_name', $company_name)
             ->set('title', hi('title'))
@@ -78,7 +89,6 @@ class Controller extends Company
             ->set('homepage', hi('homepage'))
             ->set('etc', hi('etc'))
             ->set('content', hi('content'))
-            ->set('gid', hi('gid'))
             ->save();
 
         if ( $entity ) return SUCCESS( array('id'=>$entity->id) );
@@ -150,12 +160,20 @@ class Controller extends Company
     */
 
     public function collect($in) {
-        echo template('company', 'company_list');
+        echo template('company', 'company-list');
     }
 
     public function view($in) {
         echo template('company', 'view');
     }
 
+    public function editList($in) {
+        echo template('company', 'my-company-list');
+    }
+
+    public function delete() {
+
+        echo template('company', 'delete');
+    }
 }
 

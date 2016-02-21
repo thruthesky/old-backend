@@ -20,10 +20,12 @@ $(function() {
 //ajax_load_route('company.Controller.view&id=3685'); // 회사 정보 번호 3692 번 열기
         //ajax_load_route('company.Controller.view&id=41'); // 회사 정보 번호 3692 번 열기
 
-
-
-
+        //ajax_load_route('company.Controller.editForm&id=3688');
+        //ajax_load_route('company.Controller.view&id=41');
+        //ajax_load_route('company.Controller.editForm&id=41');
+        //
     },300);
+
 
 
 
@@ -121,14 +123,14 @@ function on_company_edit(e){
     e.preventDefault();
     var $form = $(this);
     var params = $form.serialize();
-    var url = url_backend + '?' + params;
+    var url = url_backend + '?' + params + app.getLoginSignature();
     ajax_load(url, function(res) {
         console.log(res);
         var re = JSON.parse(res);
         if ( re['code'] ) return alert(re['message']);
         //console.log("success on editing company information.")
         alert("회사 정보를 등록하였습니다.");
-        ajax_load_route('company.Controller.view&id='+re['data']['id']);
+        ajax_load_route('company.Controller.view&id='+re['id']);
     });
 
 }
@@ -175,9 +177,12 @@ function on_form_login_submit(e) {
     ajax_load( app.urlServer() + '?' + $(this).serialize(), function(res) {
         console.log(res);
         var re = JSON.parse( res );
+        console.log(re);
         if ( re['code'] ) return app.alert( re['message'] );
+        if (_.isEmpty( re['username'] ) ) return app.alert( 'No username returned from backend.' );
+        if (_.isEmpty( re['signature'] ) ) return app.alert( 'No signature' );
         ls.set('username', username);
-        ls.set('signature', re['data']['signature']);
+        ls.set('signature', re['signature']);
         updateUserLogin();
         app.alert("회원 로그인을 하였습니다.", function(res){
             ajax_load_route( 'company.Controller.frontPage' );

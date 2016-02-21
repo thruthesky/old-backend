@@ -24,6 +24,7 @@ class Install extends Company
 
         //
         parent::init();
+        $this->addColumn('username', 'varchar');
         $this->addColumn('category', 'int');
         $this->addColumn('company_name', 'varchar');
         $this->addColumn('title', 'varchar');
@@ -248,6 +249,7 @@ class Install extends Company
 
     public function updateCategoryForPhilgoData() {
         $this->setPhilgoCategory('TV/인터넷', '인터넷');
+        $this->setPhilgoCategory('인터넷', '인터넷');
         $this->setPhilgoCategory('가구', '가구');
         $this->setPhilgoCategory('가전/전자', '가전/전자');
         $this->setPhilgoCategory('간판/인쇄', '간판/인쇄');
@@ -286,7 +288,7 @@ class Install extends Company
         $this->setPhilgoCategory('종교시설', '교회');
         $this->setPhilgoCategory('주점', '술집/주점');
         $this->setPhilgoCategory('컴퓨터', '컴퓨터');
-        $this->setPhilgoCategory('컴퓨터 ', '컴퓨터');
+        $this->setPhilgoCategory('컴퓨터 ','컴퓨터');
         $this->setPhilgoCategory('통관', '통관/배달');
         $this->setPhilgoCategory('통관운송이사', '통관/배달');
         $this->setPhilgoCategory('통신', '인터넷');
@@ -311,7 +313,7 @@ class Install extends Company
     private function setPhilgoCategory($old_category, $new_category)
     {
         $c = category($new_category);
-        if ( empty($c) ) die("No category : $new_category");
+        if ( empty($c) ) die("\nERROR: THIS ERROR MUST BE FIXED.\nNo category : $new_category");
         $category_id = $c->getID();
         $companies = $this->loadQuery("category == 0 AND source='philgo' AND etc='$old_category'");
         if ( $companies ) {

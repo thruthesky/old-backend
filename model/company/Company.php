@@ -15,4 +15,10 @@ class Company extends Node {
 
 
 
+    public function delete() {
+        // 관련된 첨부 파일을 모두 삭제해야 한다.
+        sys()->log("Company::delete");
+        parent::delete();
+    }
+
 }

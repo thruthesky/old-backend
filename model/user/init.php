@@ -9,9 +9,9 @@ use model\user\User;
  *
  * @note it does not check any thing if there is no username and signature.
  *
- * @Attention it stops the run time ONLY if the user's signature does not match with his username.
+ * @Attention it does NOT stop the run time even though the user's signature does not match with his username.
  *
- *      - if user is not found, then it just continues the running.
+ *
  */
 if ( hi('username') && hi('signature') ) {
     $user = user( hi('username') );
@@ -19,7 +19,7 @@ if ( hi('username') && hi('signature') ) {
         if ( $user->signature() == hi('signature') ) {
             $user->setLogin();
         }
-        else response( ERROR(-40112, "Signature does not match"));
+        //else response( ERROR(-40112, "Signature does not match"));
     }
     //else response(ERROR(-40111, "User not found."));
 }

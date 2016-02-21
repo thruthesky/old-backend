@@ -81,14 +81,21 @@ function page_no($no) {
 
 /**
  *
- * Route 호출에서 결과를 클라이언트로 전송 할 때 사용하는 함수이다.
+ * It echoes dat in JSON string and exits the script.
+ *
+ * @note Route must use this function to send data to frontend.
+ * @note Use this function to send data to client ( frontend ).
+ *
+ *
  *
  * @param $data
  *
- * @note 이 함수는 스크립트 실행을 종료한다.
+ * @Attention This function ends the runtime.
  *
- * @code 결과를 클라이언트에 전송하고 종료.
+ * @code How to send data to frontend.
  *      response(ERROR(-40111, "User not found."));
+ *      response(SUCCESS('html'=>'<h1>Okay</h1>'));
+ *      response("<p>This is HTML</p>");
  * @endcode
  */
 function response( $data ) {
@@ -96,6 +103,11 @@ function response( $data ) {
     exit;
 }
 
+/**
+ * @param $code
+ * @param $message
+ * @return array
+ */
 function response_error( $code, $message ) {
     $re = ['code'=>$code, 'message'=>$message];
     return $re;
@@ -103,22 +115,41 @@ function response_error( $code, $message ) {
 
 
 /**
- * 리턴 할 때, 현재 접속을 할 때 HTTP Input 으로 넘어온 회원 아이디를 리턴한다.
- * @param $data
+ *
+ * This adds
+ *
+ *  - 'code'=0
+ *  - 'username' = "login username ONLY IF the user is logged in"
+ *  - 'route'='route path'
+ *
+ *
+ * @param array $data - array of data to echo in JSON string.
  * @return array
  */
-function response_success( $data ) {
-    $re = array('code' => 0);
-    if ( hi('username') ) $re['username'] = hi('username');
-    if ( ! empty($data) ) $re['data'] = $data;
-    return $re;
+function response_success( $data = array() ) {
+    if ( login() ) {
+        $data['username'] = login()->username;
+    }
+    $data['route'] = hi('route');
+    $data['code'] = 0;
+    return $data;
 }
 
-
+/**
+ * Alias of response_error
+ * @param $code
+ * @param $message
+ * @return array
+ */
 function error( $code, $message ) {
     return response_error($code, $message );
 }
 
+/**
+ * Alias of response_success
+ * @param array $data
+ * @return array
+ */
 function success( $data = array() ) {
     return response_success( $data );
 }

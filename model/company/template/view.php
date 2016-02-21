@@ -73,13 +73,25 @@ if ( empty($company) ) {
             <span class="text"><?php echo $company->address?></span>
         </div>
     <?php } ?>
-    <?php if ( $company->homepage ) { ?>
+    <?php if ( $company->homepage ) {
+        $homepage = $company->homepage;
+        if ( strpos( $homepage, "http://www.philgo.com/?module=post&action=view&idx=" ) !== false ) $homepage = str_replace("http://www.philgo.com/?module=post&action=view&idx=", "www.philgo.com?", $homepage);
+
+        ?>
         <div class="row">
             <span class="caption">홈페이지</span>
-            <span class="text"><?php echo $company->homepage?></span>
+            <a href="<?php echo $company->homepage?>" target="_blank">
+                <span class="text"><?php echo $homepage?></span>
+            </a>
         </div>
     <?php } ?>
     <?php if ( $company->content ) { ?>
         <div class="row content"><?php echo $company->content?></div>
     <?php } ?>
+
+
 </div>
+
+
+<div class="button edit" route="company.Controller.editForm&id=<?php echo $company->id?>">수정</div>
+<div class="button delete" route="company.Controller.delete&id=<?php echo $company->id?>">삭제</div>

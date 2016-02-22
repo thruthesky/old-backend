@@ -42,6 +42,7 @@ $(function() {
     on_submit('form.user-register', on_form_user_register_submit);
     on_submit('form.user-edit', on_form_user_edit_submit);
     on_submit('form.login', on_form_login_submit);
+    on_submit('form.search', on_form_search_submit);
 
     on_click('.logout-button', on_logout_button);
 
@@ -61,6 +62,10 @@ $(function() {
 
     on_click('.cache-reset', on_click_cache_reset);
     on_click('.home-button,.front-button', goTop);
+
+
+    on_click('.delete-uploaded-file', on_delete_uploaded_file);
+
 });
 function on_category_edit(e){
     e.preventDefault();
@@ -117,6 +122,18 @@ function on_delete_category_icon(e) {
     });
 }
 
+
+
+function on_delete_uploaded_file(e) {
+    var $this = $(this);
+    var $img = $this.parent().find('img');
+    var fid = $img.attr('fid');
+    ajax_load_route( 'data.Controller.fileDelete&id=' + fid, function(res) {
+        var re = JSON.parse(res);
+        if ( re['code'] ) return alert('파일 삭제에 실패하였습니다. ' + re['message']);
+        $this.parent().empty();
+    });
+}
 
 function on_company_edit(e){
     console.log("on_company_edit");
@@ -211,4 +228,11 @@ function initApp() {
         '';
     app.panel.el().find('ul').append(m);
     updateUserLogin();
+}
+
+
+function on_form_search_submit(e) {
+    e.preventDefault();
+    var route = 'company.Controller.search&' + $(this).serialize();
+    ajax_load_route( route );
 }

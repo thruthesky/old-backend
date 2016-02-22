@@ -291,4 +291,31 @@ class Data extends Node {
      */
 
 
+    /**
+     * gid 를 바탕으로 관련된 모든 데이터를 리턴한다.
+     * @param $gid
+     * @return array
+     */
+    public function loadByGid($gid)
+    {
+        return $this->loadQuery("gid='$gid'");
+    }
+
+    /**
+     * gid 를 바탕으로 관련된 모든 데이터를 추출하여 그 중 첫번째 데이터 파일만 로드해서 리턴한다.
+     * @param $gid
+     * @return bool|Data
+     */
+    public function loadByGidOne($gid)
+    {
+        $ids = $this->loadQueryID("gid='$gid'");
+        if ( $ids ) {
+            return $this->load($ids[0]);
+        }
+        else return FALSE;
+    }
+
+
+
+
 }

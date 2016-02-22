@@ -18,7 +18,15 @@ if ( empty($company) ) {
 
 
 <div class="rows view">
-    <div class="row title"><?php echo $company->title?></div>
+    <div class="row title">
+        <?php
+            $data = data()->loadByGidOne($company->gid);
+        ?>
+        <?php if ($data) { ?>
+            <img src="<?php echo $data->url?>">
+        <?php } ?>
+        <?php echo $company->title?>
+    </div>
     <?php if ( $company->company_name ) { ?>
         <div class="row">
             <span class="caption">회사명</span>

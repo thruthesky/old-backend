@@ -172,8 +172,12 @@ class Controller extends Company
     }
 
     public function delete() {
-
         echo template('company', 'delete');
     }
+
+    public function search($in) {
+        echo template('company', 'search');
+    }
+
 }
 

@@ -39,8 +39,7 @@
     총 <span class="count"><?php echo company()->count()?></span> 개의 업소가 등록되어져 있습니다.
 
 
-    <form>
-        <input type="hidden" name="route" value="company.Controller.search">
+    <form class='search'>
         <input type="text" name="keyword" value="">
         <input type="submit" value="Search">
     </form>

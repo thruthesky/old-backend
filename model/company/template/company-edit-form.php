@@ -25,7 +25,67 @@ if ( empty($user) ) {
     echo "<h3>회원 로그인을 하십시오.</h3>";
     return;
 }
+?>
 
+
+<?php
+if ( $company ) $gid = $company->gid;
+else $gid = getGid();
+?>
+<div class="display-uploaded-file">
+    <?php
+        $data = data()->loadByGidOne($company->gid);
+        if ( $data ) {
+            $id = $data->id;
+            $url = $data->url;
+            echo "<img width='100%' fid='$id' src='$url'><span class='button delete-category-icon'>삭제</span>";
+        }
+    ?>
+</div>
+<form class='philgo-banner-form' action="<?php echo url_script()?>?route=data.Controller.fileUpload" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="gid" value="<?php echo $gid?>">
+    <input type="hidden" name="code" value="primary-photo">
+    <input type="hidden" name="unique" value="1">
+    <input type="hidden" name="finish" value="1">
+    <input type="file" name="userfile" onchange="on_change_file_upload(this);">
+</form>
+<script>
+    function on_change_file_upload(filebox) {
+        var $filebox = $(filebox);
+        if ( $filebox.val() == '' ) return;
+        var $form = $filebox.parents("form");
+        $form.ajaxSubmit({
+            error : function (xhr) {
+                alert("ERROR on ajaxSubmit() ...");
+            },
+            complete: function (xhr) {
+                console.log("File upload completed through jquery.form.js");
+                var re;
+                try {
+                    re = JSON.parse(xhr.responseText);
+                }
+                catch (e) {
+                    console.log(xhr.responseText);
+                    return alert("ERROR: JSON.parse() error : Failed on file upload...");
+                }
+                if ( re['code'] ) {
+                    return app.alert(re['message']);
+                }
+                else {
+                    $('.display-uploaded-file').html( get_markup_icon(re['id'], re['url']) );
+                }
+                console.log(re);
+            }
+        });
+        $filebox.val('');
+    }
+    function get_markup_icon( id, url ) {
+        return "<img width='100%' fid='"+id+"' src='"+url+"'><span class='button delete-uploaded-file'>삭제</span>";
+    }
+</script>
+
+
+<?php
 
 $location = new model\philocation\PhiLocation();
 //print_r($location->eng_to_ko);
@@ -53,7 +113,10 @@ function val($k) {
     <input type='hidden' name='route' value='company.Controller.edit'>
     <?php if ( $company ) { ?>
         <input type="hidden" name="id" value="<?php echo $company->id?>">
+    <?php } else { ?>
+
     <?php } ?>
+    <input type="hidden" name="gid" value="<?php echo $gid?>">
     <select name="category">
         <?php
         foreach ( $cats as $cat ) {
@@ -101,8 +164,6 @@ function val($k) {
     <input type='text' name='homepage' value="<?php echo val('homepage')?>" placeholder='홈페이지 주소'>
 
     <textarea name='content' value='' placeholder='설명을 입력하십시오.'><?php echo val('content')?></textarea>
-
-
 
     <input type='submit'>
 </form>

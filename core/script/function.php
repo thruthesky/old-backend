@@ -17,6 +17,10 @@ function unique_id()
 {
     return md5(uniqid(rand(), true) . time());
 }
+function getGid()
+{
+    return unique_id();
+}
 
 
 function get_backtrace()

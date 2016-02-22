@@ -26,22 +26,8 @@ $count_company = company()->count("category=$category_id");
         <?php echo $category_name?> 업소가 있습니다.
     </div>
 <?php if ( $count_company == 0 ) return ?>
-    <div class="companies">
+
 <?php
 $companies = company()->loadQuery("category=$category_id");
-
-foreach ( $companies as $company ) {
-    $homepage = $company->homepage;
-    if ( strpos( $homepage, "http://www.philgo.com/?module=post&action=view&idx=" ) !== false ) $homepage = str_replace("http://www.philgo.com/?module=post&action=view&idx=", "www.philgo.com?", $homepage);
-    if ( $company->kakao ) $kakao = "<div class='kakao'>카카오톡 : {$company->kakao}</div>";
-    else $kakao = null;
-    echo <<<EOH
-    <div class="company" route="company.Controller.view&id={$company->id}">
-        <div class="company-name">{$company->company_name}</div>
-        <div class="numbers">{$company->mobile} {$company->landline}</div>
-        $kakao
-    </div>
-EOH;
-    }
-    ?>
-</div>
+display_companies($companies);
+?>

@@ -287,6 +287,94 @@ frontend 에서 사용 할 수 있는 view 와 관련된 HTML 를 보관하는 t
     -- 하나의 레코드에 파일이 여러개 등록 될 때, gid 에 따라서 어떤 레코드의 파일들인지 쉽게 확인 할 수 있다.
 
 
+예제) HTML 과 자바스크립트
+
+아래의 예제는 범용적으로 사용 할 수 있다.
+
+form 의 hidden 변수 중, gid, code, unique, finish 는 적절하게 변경을 하면 된다.
+
+upload 버튼을 클릭하게 되면, on_change_file_upload() 가 실행되고 업로드를 진행한다.
+
+업로드에 에러가 없으면 display-uploaded-file 에 업로드 된 파일의 IMG 태그 내용을 추가하는데, 삭제 버튼을 추가한다.
+
+
+
+
+    <?php
+    if ( $company ) $gid = $company->gid;
+    else $gid = getGid();
+    ?>
+    <div class="display-uploaded-file">
+        <?php
+            $data = data()->loadByGidOne($company->gid);
+            if ( $data ) {
+                $id = $data->id;
+                $url = $data->url;
+                echo "<img width='100%' fid='$id' src='$url'><span class='button delete-category-icon'>삭제</span>";
+            }
+        ?>
+    </div>
+    <form class='philgo-banner-form' action="<?php echo url_script()?>?route=data.Controller.fileUpload" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="gid" value="<?php echo $gid?>">
+        <input type="hidden" name="code" value="primary-photo">
+        <input type="hidden" name="unique" value="1">
+        <input type="hidden" name="finish" value="1">
+        <input type="file" name="userfile" onchange="on_change_file_upload(this);">
+    </form>
+    <script>
+        function on_change_file_upload(filebox) {
+            var $filebox = $(filebox);
+            if ( $filebox.val() == '' ) return;
+            var $form = $filebox.parents("form");
+            $form.ajaxSubmit({
+                error : function (xhr) {
+                    alert("ERROR on ajaxSubmit() ...");
+                },
+                complete: function (xhr) {
+                    console.log("File upload completed through jquery.form.js");
+                    var re;
+                    try {
+                        re = JSON.parse(xhr.responseText);
+                    }
+                    catch (e) {
+                        console.log(xhr.responseText);
+                        return alert("ERROR: JSON.parse() error : Failed on file upload...");
+                    }
+                    if ( re['code'] ) {
+                        return app.alert(re['message']);
+                    }
+                    else {
+                        $('.display-uploaded-file').html( get_markup_icon(re['id'], re['url']) );
+                    }
+                    console.log(re);
+                }
+            });
+            $filebox.val('');
+        }
+        function get_markup_icon( id, url ) {
+            return "<img width='100%' fid='"+id+"' src='"+url+"'><span class='button delete-uploaded-file'>삭제</span>";
+        }
+    </script>
+
+
+
+삭제 버튼은 아래와 같은데 완전히 범용적이다. 아무것도 수정하지 않고 그대로 사용가능하다.
+
+
+    
+    function on_delete_category_icon(e) {
+        var $this = $(this);
+        //$this.parents('.row').find('.content').show();
+        var $img = $this.parent().find('img');
+        var fid = $img.attr('fid');
+        ajax_load_route( 'data.Controller.fileDelete&id=' + fid, function(res) {
+            var re = JSON.parse(res);
+            if ( re['code'] ) return alert('파일 삭제에 실패하였습니다. ' + re['message']);
+            $this.parent().empty();
+        });
+    }
+
+
 # 모듈 별 테스트, 모듈 별 기능 동작 상태 확인
 
 - 각 모듈 Controller 의 test 메소드를 실행하므로서 설치 여부나 entity 정보를 얻을 수 있다.

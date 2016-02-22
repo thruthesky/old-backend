@@ -10,9 +10,6 @@ if ( ! $company ) {
 }
 
 if ( empty($company->get('username')) || $company->username != login()->username ) {
-
-    print_r($company->username);
-    print_r(login()->username);
     echo "<div class='box warning'>삭제 실패 : 회원님의 업소가 아닙니다.</div>";
     return;
 }
